@@ -59,7 +59,7 @@ struct SettingsView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity)
-        .frame(height: UIScreen.main.bounds.height * 0.5) // Высота 50% экрана
+        .frame(height: UIScreen.main.bounds.height * 0.5) 
         .background(Color.black.opacity(0.9))
         .clipShape(RoundedRectangle(cornerRadius: 20))
         .transition(.move(edge: .bottom))

@@ -5,8 +5,9 @@ import SwiftUI
 import SwiftUI
 
 struct OutfitView: View {
-    @State private var selectedCategory: OutfitCategory = .casual
+    @State private var selectedCategory: OutfitCategory = .accessories
     @State private var showSettings = false
+    @State private var isShowingWardrobe = false 
 
     var body: some View {
         ZStack {
@@ -26,18 +27,19 @@ struct OutfitView: View {
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                         ForEach(0..<6, id: \.self) { _ in
-                            ClothingCardView()
+                            ClothingCardView(item: ClothingItem(image: UIImage(), title: "Placeholder", category: .accessories, season: "Hot", type: "Daily"))
                         }
                     }
                     .padding(.horizontal)
                 }
 
-                BottomBarView(isSettingsPresented: $showSettings)
+                // ✅ Теперь передаём isShowingWardrobe в BottomBarView
+                BottomBarView(isSettingsPresented: $showSettings, isShowingWardrobe: $isShowingWardrobe)
             }
-            .blur(radius: showSettings ? 5 : 0) // ✅ Размытие основного экрана
+            .blur(radius: showSettings ? 5 : 0)
 
             if showSettings {
-                Color.black.opacity(0.4) 
+                Color.black.opacity(0.4)
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
                         showSettings = false
@@ -52,3 +54,4 @@ struct OutfitView: View {
         .background(Color.gray.opacity(0.1))
     }
 }
+

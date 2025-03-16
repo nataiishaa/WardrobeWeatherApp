@@ -2,26 +2,24 @@ import SwiftUI
 
 import Foundation
 
-
 struct ClothingCardView: View {
+    let item: ClothingItem
+
     var body: some View {
         VStack {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.gray.opacity(0.3)) 
-                .frame(height: 150)
-            
-            RoundedRectangle(cornerRadius: 5)
-                .fill(Color.gray.opacity(0.5))
-                .frame(width: 100, height: 20)
-            
-            RoundedRectangle(cornerRadius: 3)
-                .fill(Color.gray.opacity(0.4))
-                .frame(width: 80, height: 15)
+            Image(uiImage: item.image)
+                .resizable()
+                .scaledToFit()
+                .frame(height: 100)
+                .cornerRadius(8)
+
+            Text(item.title)
+                .font(.headline)
+                .foregroundColor(.black)
         }
         .padding()
-        .frame(width: 160, height: 220)
         .background(Color.white)
-        .cornerRadius(12)
-        .shadow(radius: 4)
+        .cornerRadius(10)
+        .shadow(radius: 3)
     }
 }
