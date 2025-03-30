@@ -5,9 +5,9 @@ struct ClothingItem: Identifiable {
     let id = UUID()
     var image: UIImage
     var title: String
-    var category: OutfitCategory
-    var season: OutfitSeason
-    var type: OutfitType
+    var category: OutfitCategory?
+    var season: OutfitSeason?
+    var type: OutfitType?
 }
 
 enum OutfitCategory: String, CaseIterable {

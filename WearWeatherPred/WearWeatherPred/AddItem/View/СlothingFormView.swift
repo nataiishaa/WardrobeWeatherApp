@@ -6,60 +6,120 @@
 //
 import SwiftUI
 
+import SwiftUI
+
 struct ClothingFormView: View {
     @Binding var item: ClothingItem
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var viewModel: WardrobeViewModel
+    @State private var showExitAlert = false
 
     var body: some View {
-        VStack {
-            Image(uiImage: item.image)
-                .resizable()
-                .scaledToFit()
-                .frame(height: 300)
+        ZStack(alignment: .topLeading) {
+            // Полупрозрачный фон
+            Color.black.opacity(0.2).ignoresSafeArea()
 
-            VStack(spacing: 10) {
-                HStack {
-                    Text("Name:").bold()
-                    TextField("Enter name", text: $item.title)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                }
+            VStack(spacing: 0) {
+                // Фото и кнопка выхода
+                ZStack(alignment: .topLeading) {
+                    Image(uiImage: item.image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: 300)
+                        .clipped()
 
-                VStack(alignment: .leading) {
-                    Text("Category:").bold()
-                    HStack {
-                        Button("accessories") { item.category = .accessories }
-                        Button("item") { item.category = .item }
-                        Button("shoes") { item.category = .shoes }
-                    }
-                    
-                    Text("Season:").bold()
-                    HStack {
-                        Button("hot") { item.season = .hot }
-                        Button("cold") { item.season = .cold }
-                        Button("rainy") { item.season = .rainy }
-                    }
-                    Text("Type:").bold()
-                    HStack {
-                        Button("daily") { item.type = .daily }
-                        Button("casual") { item.type = .casual }
-                        Button("party") { item.type = .party }
+                    // Кнопка "назад"
+                    Button(action: {
+                        showExitAlert = true
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(.white)
+                            .padding(12)
+                            .background(Color.black.opacity(0.6))
+                            .clipShape(Circle())
+                            .padding()
                     }
                 }
 
-                Button(action: {
-                    viewModel.addItem(item)
-                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    Text("Add")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
+                // Карточка
+                VStack(spacing: 16) {
+                    // Название
+                    HStack {
+                        Text("Name:").bold()
+                        TextField("Enter name", text: $item.title)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .padding(8)
+                            .background(Color.white)
+                            .cornerRadius(6)
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.gray.opacity(0.3)))
+                    }
+
+                    // Категория
+                    VStack(alignment: .leading) {
+                        Text("Category:").bold()
+                        SelectionRow(
+                            options: OutfitCategory.allCases.map { $0.rawValue },
+                            selected: item.category?.rawValue ?? "",
+                            onSelect: { selected in
+                                item.category = OutfitCategory(rawValue: selected)
+                            }
+                        )
+                    }
+
+                    // Сезон
+                    VStack(alignment: .leading) {
+                        Text("Season").bold()
+                        SelectionRow(
+                            options: OutfitSeason.allCases.map { $0.rawValue },
+                            selected: item.season?.rawValue ?? "",
+                            onSelect: { selected in
+                                item.season = OutfitSeason(rawValue: selected)
+                            }
+                        )
+                    }
+
+                    // Тип
+                    VStack(alignment: .leading) {
+                        Text("Type").bold()
+                        SelectionRow(
+                            options: OutfitType.allCases.map { $0.rawValue },
+                            selected: item.type?.rawValue ?? "",
+                            onSelect: { selected in
+                                item.type = OutfitType(rawValue: selected)
+                            }
+                        )
+                    }
+
+                    // Кнопка "Add"
+                    Button(action: {
+                        viewModel.addItem(item)
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Text("Add")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.black)
+                            .foregroundColor(.white)
+                            .cornerRadius(12)
+                    }
                 }
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(24)
+                .padding(.horizontal)
+                .padding(.bottom)
+                .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: -4)
             }
-            .padding()
+            .alert(isPresented: $showExitAlert) {
+                Alert(
+                    title: Text("Выйти без сохранения?"),
+                    message: Text("Ваш элемент гардероба не будет сохранён."),
+                    primaryButton: .destructive(Text("Выйти")) {
+                        presentationMode.wrappedValue.dismiss()
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
         }
     }
 }
