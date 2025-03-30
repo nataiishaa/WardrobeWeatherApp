@@ -76,18 +76,17 @@ struct BottomBarView: View {
             ImagePickerView(sourceType: sourceType) { image in
                 if let image = image {
                     selectedImage = image
-                    detectedTitle = "Загрузка..." // ✅ Устанавливаем временный текст
-
+                    detectedTitle = "Загрузка..." 
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                         ImageClassifier.shared.classify(image: image) { result in
                             DispatchQueue.main.async {
                                 detectedTitle = result ?? "Unknown"
-                                isShowingClothingForm = true // ✅ Анкета открывается после анализа
+                                isShowingClothingForm = true
                             }
                         }
                     }
                 } else {
-                    isShowingImagePickerView = false // ✅ Закрываем, если фото не выбрано
+                    isShowingImagePickerView = false
                 }
             }
         }
@@ -96,10 +95,10 @@ struct BottomBarView: View {
             set: { if !$0 { isShowingClothingForm = false; selectedImage = nil } }
         )) {
             if let selectedImage = selectedImage {
-                ClothingFormView(item: .constant(ClothingItem(image: selectedImage, title: detectedTitle, category: .item, season: "Hot", type: "Daily")))
+                ClothingFormView(item: .constant(ClothingItem(image: selectedImage, title: detectedTitle, category: .item, season: .hot, type: .daily)))
                     .environmentObject(viewModel)
             } else {
-                Text("Не удалось загрузить изображение") // ✅ Теперь корректное сообщение об ошибке
+                Text("Не удалось загрузить изображение")
                     .font(.headline)
                     .foregroundColor(.red)
             }

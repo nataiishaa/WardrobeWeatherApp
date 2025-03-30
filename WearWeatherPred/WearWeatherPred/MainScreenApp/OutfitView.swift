@@ -1,7 +1,3 @@
-
-
-import SwiftUI
-
 import SwiftUI
 
 struct OutfitView: View {
@@ -27,13 +23,12 @@ struct OutfitView: View {
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                         ForEach(0..<6, id: \.self) { _ in
-                            ClothingCardView(item: ClothingItem(image: UIImage(), title: "Placeholder", category: .accessories, season: "Hot", type: "Daily"))
+                            ClothingCardView(item: ClothingItem(image: UIImage(), title: "Placeholder", category: .accessories, season: .cold, type: .party))
                         }
                     }
                     .padding(.horizontal)
                 }
 
-                // ✅ Теперь передаём isShowingWardrobe в BottomBarView
                 BottomBarView(isSettingsPresented: $showSettings, isShowingWardrobe: $isShowingWardrobe)
             }
             .blur(radius: showSettings ? 5 : 0)

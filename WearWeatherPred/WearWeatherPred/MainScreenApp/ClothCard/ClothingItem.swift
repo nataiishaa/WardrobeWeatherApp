@@ -1,35 +1,13 @@
 import SwiftUI
-
-//struct ClothingItem: Identifiable {
-//    let id = UUID()
-//    var image: UIImage
-//    var title: String
-//    var category: OutfitCategory
-//    var season: String
-//    var type: String
-//
-//    static let placeholder = ClothingItem(image: UIImage(), title: "New Item", category: .casual, season: "Hot", type: "Daily")
-//}
-//
-//enum OutfitCategory: String, CaseIterable {
-//    case casual = "Casual"
-//    case daily = "Daily"
-//    case party = "Party"
-//}
-
-
-import SwiftUI
 import UIKit
-
-import SwiftUI
 
 struct ClothingItem: Identifiable {
     let id = UUID()
     var image: UIImage
     var title: String
     var category: OutfitCategory
-    var season: String
-    var type: String
+    var season: OutfitSeason
+    var type: OutfitType
 }
 
 enum OutfitCategory: String, CaseIterable {
@@ -37,6 +15,20 @@ enum OutfitCategory: String, CaseIterable {
     case item = "Item"
     case shoes = "Shoes"
 }
+
+enum OutfitSeason: String, CaseIterable {
+    case hot = "hot"
+    case cold = "cold"
+    case rainy = "rainy"
+}
+
+
+enum OutfitType: String, CaseIterable {
+    case daily = "daily"
+    case casual = "casual"
+    case party = "party"
+}
+
 
 class WardrobeViewModel: ObservableObject {
     static let shared = WardrobeViewModel()

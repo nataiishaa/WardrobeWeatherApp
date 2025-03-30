@@ -4,7 +4,6 @@
 //
 //  Created by Наталья Захарова on 16.03.2025.
 //
-
 import SwiftUI
 
 struct ClothingFormView: View {
@@ -29,9 +28,22 @@ struct ClothingFormView: View {
                 VStack(alignment: .leading) {
                     Text("Category:").bold()
                     HStack {
-                        Button("Accessories") { item.category = .accessories }
-                        Button("Item") { item.category = .item }
-                        Button("Shoes") { item.category = .shoes }
+                        Button("accessories") { item.category = .accessories }
+                        Button("item") { item.category = .item }
+                        Button("shoes") { item.category = .shoes }
+                    }
+                    
+                    Text("Season:").bold()
+                    HStack {
+                        Button("hot") { item.season = .hot }
+                        Button("cold") { item.season = .cold }
+                        Button("rainy") { item.season = .rainy }
+                    }
+                    Text("Type:").bold()
+                    HStack {
+                        Button("daily") { item.type = .daily }
+                        Button("casual") { item.type = .casual }
+                        Button("party") { item.type = .party }
                     }
                 }
 

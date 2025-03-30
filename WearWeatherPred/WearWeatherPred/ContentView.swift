@@ -6,14 +6,12 @@
 //
 import SwiftUI
 
-import SwiftUI
-
 struct ContentView: View {
     @StateObject var viewModel = WardrobeViewModel() 
 
     var body: some View {
         OutfitView()
-            .environmentObject(viewModel) //
+            .environmentObject(viewModel) 
     }
 }
 
