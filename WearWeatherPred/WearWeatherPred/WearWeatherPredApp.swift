@@ -8,3 +8,4 @@ struct WearWeatherPredApp: App {
         }
     }
 }
+

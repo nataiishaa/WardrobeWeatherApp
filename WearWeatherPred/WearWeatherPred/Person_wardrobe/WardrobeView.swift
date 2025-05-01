@@ -6,8 +6,6 @@
 //
 import SwiftUI
 
-import SwiftUI
-
 struct WardrobeView: View {
     @State private var selectedCategory: OutfitCategory = .item
     @ObservedObject var viewModel = WardrobeViewModel.shared

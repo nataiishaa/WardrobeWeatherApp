@@ -37,27 +37,27 @@ struct WeatherView: View {
     }
     
     var body: some View {
-        ZStack {
-            weatherBackground
-                .frame(width: 200, height: 1200)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-            
-            VStack(alignment: .leading) {
-                Text("\(Int(weatherService.weather?.main.temp ?? 0))°")
-                    .font(.system(size: 32, weight: .bold))
-                    .foregroundColor(.white)
-                Text(city)
-                    .font(.headline)
-                    .foregroundColor(.white)
-                Text(weatherService.weather?.weather.first?.description.capitalized ?? "Loading...")
-                    .font(.subheadline)
-                    .foregroundColor(.white.opacity(0.8))
+            ZStack {
+                weatherBackground
+                    .frame(width: 300, height: 120)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+
+                VStack(alignment: .leading) {
+                    Text("\(Int(weatherService.weather?.main.temp ?? 0))°")
+                        .font(.system(size: 32, weight: .bold))
+                        .foregroundColor(.white)
+                    Text(city)
+                        .font(.headline)
+                        .foregroundColor(.white)
+                    Text(weatherService.weather?.weather.first?.description.capitalized ?? "Loading...")
+                        .font(.subheadline)
+                        .foregroundColor(.white.opacity(0.8))
+                }
+                .padding()
             }
-            .padding()
+            .frame(width: 200, height: 80)
+            .onAppear {
+                weatherService.fetchWeather(city: city)
+            }
         }
-        .frame(width: 200, height: 80)
-        .onAppear {
-            weatherService.fetchWeather(city: city)
-        }
-    }
 }

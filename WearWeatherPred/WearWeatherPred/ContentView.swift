@@ -6,15 +6,29 @@
 //
 import SwiftUI
 
+//struct ContentView: View {
+//    @State private var isShowingWardrobe = false
+//
+//    var body: some View {
+//        OutfitView(isShowingWardrobe: $isShowingWardrobe)
+//            .environmentObject(WardrobeViewModel.shared)
+//    }
+//}
+
+
 struct ContentView: View {
-    @StateObject var viewModel = WardrobeViewModel() 
+    @State private var isShowingWardrobe = false
 
     var body: some View {
-        OutfitView()
-            .environmentObject(viewModel) 
+        OutfitView(isShowingWardrobe: $isShowingWardrobe)
+            .environmentObject(WardrobeViewModel.shared)
+            // ⬇️ добавляем sheet
+            .sheet(isPresented: $isShowingWardrobe) {
+                WardrobeView()                         // собственно список
+                    .environmentObject(WardrobeViewModel.shared)
+            }
     }
 }
-
 
 #Preview {
     ContentView()

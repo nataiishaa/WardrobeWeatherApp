@@ -10,7 +10,7 @@ struct BottomBarView: View {
     @State private var isShowingClothingForm = false
     @EnvironmentObject var viewModel: WardrobeViewModel
     @State private var detectedTitle: String = ""
-
+    
     var body: some View {
         ZStack {
             HStack {
