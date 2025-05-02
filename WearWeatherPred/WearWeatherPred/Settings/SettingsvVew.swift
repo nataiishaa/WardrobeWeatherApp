@@ -4,7 +4,6 @@
 //
 //  Created by Наталья Захарова on 16.03.2025.
 //
-
 import SwiftUI
 
 struct SettingsView: View {
@@ -12,56 +11,55 @@ struct SettingsView: View {
     @State private var isNotificationsEnabled = false
 
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 0) {
+
+            // ─── Header ─────────────────────────────
             HStack {
                 Text("Settings")
-                    .font(.title)
-                    .fontWeight(.bold)
+                    .font(.title).bold()
                     .foregroundColor(.white)
+
                 Spacer()
-                Button(action: {
-                    isPresented = false
-                }) {
+
+                Button { isPresented = false } label: {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(.white)
                         .font(.title)
+                        .foregroundColor(.white)
                 }
             }
-            .padding()
+            .padding(.horizontal)
+            .padding(.vertical, 12)
 
-            Divider().background(Color.white.opacity(0.3))
+            Divider().background(Color.white.opacity(0.2))
 
-            // About section
+            // ─── About row ──────────────────────────
             HStack {
                 Image(systemName: "info.circle")
-                    .foregroundColor(.white)
                 Text("About")
-                    .foregroundColor(.white)
                 Spacer()
-                Text(">")
-                    .foregroundColor(.white.opacity(0.7))
+                Image(systemName: "chevron.right")
+                    .opacity(0.6)
             }
-            .padding()
+            .foregroundColor(.white)
+            .padding(.horizontal)
+            .padding(.vertical, 14)
 
-            // Push Notifications toggle
+            // ─── Notifications row ──────────────────
             HStack {
                 Image(systemName: "bell.badge")
-                    .foregroundColor(.white)
                 Text("Push notifications")
-                    .foregroundColor(.white)
                 Spacer()
                 Toggle("", isOn: $isNotificationsEnabled)
                     .labelsHidden()
-                    .toggleStyle(SwitchToggleStyle(tint: Color.purple))
+                    .toggleStyle(SwitchToggleStyle(tint: .purple))
             }
-            .padding()
+            .foregroundColor(.white)
+            .padding(.horizontal)
+            .padding(.vertical, 14)
 
             Spacer()
         }
-        .frame(maxWidth: .infinity)
-        .frame(height: UIScreen.main.bounds.height * 0.5) 
-        .background(Color.black.opacity(0.9))
-        .clipShape(RoundedRectangle(cornerRadius: 20))
-        .transition(.move(edge: .bottom))
+       
+        .ignoresSafeArea(.container, edges: .bottom)
     }
 }

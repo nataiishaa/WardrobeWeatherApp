@@ -61,9 +61,7 @@ import SwiftUI
 
 struct WardrobeView: View {
 
-    // ---------- внешние биндинги ----------
-    /// нужен, чтобы иконка «шестерёнка» в баре открывала Settings,
-    /// а «футболка» могла закрыть Wardrobe
+ 
     @Binding var isShowingWardrobe: Bool
     @Binding var isSettingsPresented: Bool
 
