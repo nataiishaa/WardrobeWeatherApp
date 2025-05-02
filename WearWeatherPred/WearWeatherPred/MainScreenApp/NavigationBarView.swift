@@ -56,7 +56,7 @@ struct BottomBarView: View {
             }
             .padding()
             .frame(height: 50)
-            .background(Color.black.opacity(0.9))
+            .background(Color.brandPrimary)
             .clipShape(Capsule())
             .foregroundColor(.white)
             .padding(.horizontal, 16)

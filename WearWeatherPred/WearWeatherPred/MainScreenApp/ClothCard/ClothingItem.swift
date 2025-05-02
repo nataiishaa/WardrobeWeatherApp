@@ -30,16 +30,6 @@ enum OutfitType: String, CaseIterable {
 }
 
 
-//class WardrobeViewModel: ObservableObject {
-//    static let shared = WardrobeViewModel()
-//    
-//    @Published var wardrobeItems: [ClothingItem] = [] 
-//    
-//    func addItem(_ item: ClothingItem) {
-//        wardrobeItems.append(item)
-//    }
-//}
-//
 
 
 import SwiftUI
@@ -58,12 +48,12 @@ class WardrobeViewModel: ObservableObject {
     // MARK: - Singleton
     static let shared = WardrobeViewModel()
     private init() {
-        load() // preload saved wardrobe on launch
+        load()
     }
 
     // MARK: - Published items
     @Published var wardrobeItems: [ClothingItem] = [] {
-        didSet { save() } // persist on every change
+        didSet { save() } 
     }
 
     // MARK: - File locations
