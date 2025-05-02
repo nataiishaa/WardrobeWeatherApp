@@ -13,7 +13,7 @@ struct ClothingCardView: View {
                 .cornerRadius(8)
 
             Text(item.title)
-                .font(.headline)
+                .montserrat(size: 16).bold()
                 .foregroundColor(.black)
         }
         .padding()

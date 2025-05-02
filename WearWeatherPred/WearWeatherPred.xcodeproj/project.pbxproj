@@ -15,9 +15,22 @@
 		A2D1425B2D870054003B6AD9 /* MobileNetV2.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MobileNetV2.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A2C530132DC56FE500AB54F7 /* Exceptions for "WearWeatherPred" folder in "WearWeatherPred" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A2D142252D86DA7E003B6AD9 /* WearWeatherPred */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A2D142282D86DA7E003B6AD9 /* WearWeatherPred */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A2C530132DC56FE500AB54F7 /* Exceptions for "WearWeatherPred" folder in "WearWeatherPred" target */,
+			);
 			path = WearWeatherPred;
 			sourceTree = "<group>";
 		};
@@ -261,6 +274,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"WearWeatherPred/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WearWeatherPred/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -289,6 +303,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"WearWeatherPred/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WearWeatherPred/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

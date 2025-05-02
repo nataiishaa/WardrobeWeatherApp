@@ -31,11 +31,12 @@ struct WardrobeView: View {
             VStack(spacing: 0) {
                 // Header moved closer to top
                 Text("My wardrobe")
-                    .font(.title2.weight(.semibold))
+                    .montserrat(size: 30).bold()
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 20)
                     .padding(.top, 44)
+                    
 
                 // White container fills remaining space
                 VStack(spacing: 0) {

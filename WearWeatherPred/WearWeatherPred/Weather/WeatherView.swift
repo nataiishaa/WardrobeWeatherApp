@@ -45,13 +45,13 @@ struct WeatherView: View {
 
                 VStack(alignment: .leading) {
                     Text("\(Int(weatherService.weather?.main.temp ?? 0))°")
-                        .font(.system(size: 32, weight: .bold))
+                        .montserrat(size: 32).bold()
                         .foregroundColor(.white)
                     Text(city)
-                        .font(.headline)
+                        .montserrat(size: 32).bold()
                         .foregroundColor(.white)
                     Text(weatherService.weather?.weather.first?.description.capitalized ?? "Loading...")
-                        .font(.subheadline)
+                        .montserrat(size: 16).bold()
                         .foregroundColor(.white.opacity(0.8))
                 }
                 .padding()

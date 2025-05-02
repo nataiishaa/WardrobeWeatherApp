@@ -35,8 +35,10 @@ struct ClothingFormView: View {
 
                 VStack(spacing: 16) {
                     HStack {
-                        Text("Name:").bold()
+                        Text("Name:")
+                            .montserrat(size: 16).bold()
                         TextField("Enter name", text: $item.title)
+                        
                             .padding(8).background(Color.white).cornerRadius(6)
                             .overlay(RoundedRectangle(cornerRadius: 6)
                                 .stroke(Color.gray.opacity(0.3)))
@@ -56,6 +58,7 @@ struct ClothingFormView: View {
                         isPresented = false
                     }) {
                         Text(isEditingMode ? "Save" : "Add")
+                            .montserrat(size: 16).bold()
                             .frame(maxWidth: .infinity).padding()
                             .background(Color.black).foregroundColor(.white)
                             .cornerRadius(12)
@@ -67,6 +70,7 @@ struct ClothingFormView: View {
                             isPresented = false
                         } label: {
                             Text("Delete")
+                                .montserrat(size: 16).bold()
                                 .frame(maxWidth: .infinity).padding()
                                 .background(Color.red).foregroundColor(.white)
                                 .cornerRadius(12)

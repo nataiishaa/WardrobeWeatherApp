@@ -16,7 +16,7 @@ struct SettingsView: View {
             // ─── Header ─────────────────────────────
             HStack {
                 Text("Settings")
-                    .font(.title).bold()
+                    .montserrat(size: 16).bold()
                     .foregroundColor(.white)
 
                 Spacer()

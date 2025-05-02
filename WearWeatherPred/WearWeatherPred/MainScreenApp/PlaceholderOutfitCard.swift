@@ -15,10 +15,10 @@ struct PlaceholderOutfitCard: View {
                 .cornerRadius(8)
 
             Text("Autumn outfit")
-                .font(.headline)
+                .montserrat(size: 16).bold()
 
             Text("6 items")
-                .font(.subheadline)
+                .montserrat(size: 16).bold()
                 .foregroundColor(.gray)
         }
         .padding()
