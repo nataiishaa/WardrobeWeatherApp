@@ -6,16 +6,6 @@
 //
 import SwiftUI
 
-//struct ContentView: View {
-//    @State private var isShowingWardrobe = false
-//
-//    var body: some View {
-//        OutfitView(isShowingWardrobe: $isShowingWardrobe)
-//            .environmentObject(WardrobeViewModel.shared)
-//    }
-//}
-
-
 struct ContentView: View {
     @State private var isShowingWardrobe = false
 

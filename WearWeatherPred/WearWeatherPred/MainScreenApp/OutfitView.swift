@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct OutfitView: View {
-    @State private var selectedCategory: OutfitCategory = .accessories
+    @State private var selectedCategory: OutfitType = .casual
       @State private var showSettings = false
       @Binding var isShowingWardrobe: Bool
 
@@ -11,9 +11,9 @@ struct OutfitView: View {
                   WeatherView(city: "Moscow")
                       .padding(.top, 10)
 
-                  Picker("Category", selection: $selectedCategory) {
-                      ForEach(OutfitCategory.allCases, id: \.self) { category in
-                          Text(category.rawValue).tag(category)
+                  Picker("Type", selection: $selectedCategory) {
+                      ForEach(OutfitType.allCases, id: \.self) { type in
+                          Text(type.rawValue).tag(type)
                       }
                   }
                   .pickerStyle(SegmentedPickerStyle())
@@ -22,7 +22,7 @@ struct OutfitView: View {
                   ScrollView {
                       LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                           ForEach(0..<6, id: \.self) { _ in
-                              PlaceholderOutfitCard() // просто заглушка
+                              PlaceholderOutfitCard() 
                           }
                       }
                       .padding(.horizontal)
