@@ -1,107 +1,60 @@
 import SwiftUI
 
 struct BottomBarView: View {
-    @Binding var isSettingsPresented: Bool
-    @Binding var isShowingWardrobe: Bool
-    @State private var isShowingImagePicker = false
-    @State private var isShowingImagePickerView = false
-    @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
-    @State private var selectedImage: UIImage?
-    @State private var isShowingClothingForm = false
-    @EnvironmentObject var viewModel: WardrobeViewModel
-    @State private var detectedTitle: String = ""
-    
+
+    enum Tab { case outfit, wardrobe }
+
+    let activeTab: Tab
+    let openWardrobe:  () -> Void
+    let openSettings:  () -> Void
+    let addItem:       () -> Void
+
     var body: some View {
-        ZStack {
-            HStack {
-                Button(action: {}) {
-                    Image(systemName: "cloud")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 24, height: 24)
-                }
+        HStack {
+            barButton("cloud",
+                      isActive: activeTab == .outfit,
+                      action: { if activeTab != .outfit { openWardrobe() } })
 
-                Spacer()
+            Spacer()
 
-                Button(action: {
-                    isShowingWardrobe.toggle()
-                }) {
-                    Image(systemName: "tshirt")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 24, height: 24)
-                }
+            barButton("tshirt",
+                      isActive: activeTab == .wardrobe,
+                      action: { if activeTab != .wardrobe { openWardrobe() } })
 
-                Spacer()
+            Spacer()
 
-                Button(action: {
-                    isSettingsPresented.toggle()
-                }) {
-                    Image(systemName: "slider.horizontal.3")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 24, height: 24)
-                }
+            barButton("slider.horizontal.3",
+                      isActive: false,
+                      action: openSettings)
 
-                Spacer()
+            Spacer()
 
-                Button(action: {
-                    isShowingImagePicker = true
-                }) {
-                    Image(systemName: "plus")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 24, height: 24)
-                }
-            }
-            .padding()
-            .frame(height: 50)
-            .background(Color.brandPrimary)
-            .clipShape(Capsule())
-            .foregroundColor(.white)
-            .padding(.horizontal, 16)
-            .confirmationDialog("Добавить элемент", isPresented: $isShowingImagePicker, titleVisibility: .visible) {
-                Button("Сфотографировать") {
-                    sourceType = .camera
-                    isShowingImagePickerView = true
-                }
-                Button("Выбрать из галереи") {
-                    sourceType = .photoLibrary
-                    isShowingImagePickerView = true
-                }
-                Button("Отмена", role: .cancel) { }
-            }
+            barButton("plus",
+                      isActive: false,
+                      action: addItem)
         }
-        .fullScreenCover(isPresented: $isShowingImagePickerView) {
-            ImagePickerView(sourceType: sourceType) { image in
-                if let image = image {
-                    selectedImage = image
-                    detectedTitle = "Загрузка..." 
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        ImageClassifier.shared.classify(image: image) { result in
-                            DispatchQueue.main.async {
-                                detectedTitle = result ?? "Unknown"
-                                isShowingClothingForm = true
-                            }
-                        }
-                    }
-                } else {
-                    isShowingImagePickerView = false
-                }
-            }
-        }
-        .fullScreenCover(isPresented: Binding(
-            get: { isShowingClothingForm && selectedImage != nil },
-            set: { if !$0 { isShowingClothingForm = false; selectedImage = nil } }
-        )) {
-            if let selectedImage = selectedImage {
-                ClothingFormView(item: .constant(ClothingItem(image: selectedImage, title: detectedTitle, category: .item, season: .hot, type: .daily)))
-                    .environmentObject(viewModel)
-            } else {
-                Text("Не удалось загрузить изображение")
-                    .font(.headline)
-                    .foregroundColor(.red)
-            }
+        .padding()
+        .frame(height: 50)
+        .background(Color.brandPrimary)
+        .clipShape(Capsule())
+        .foregroundColor(.white)
+        .padding(.horizontal, 16)
+    }
+
+    // MARK: helper
+    @ViewBuilder
+    private func barButton(_ system: String,
+                           isActive: Bool,
+                           action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: system)
+                .resizable().scaledToFit()
+                .frame(width: 22, height: 22)
+                .padding(12)
+                .background(
+                    Circle().fill(isActive ? Color.white.opacity(0.30) : .clear)
+                )
+                .opacity(isActive ? 0.65 : 1.0)
         }
     }
 }

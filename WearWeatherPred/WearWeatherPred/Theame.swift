@@ -1,11 +1,3 @@
-//
-//  Theame.swift
-//  WearWeatherPred
-//
-//  Created by Наталья Захарова on 02.05.2025.
-//
-
-
 import SwiftUI
 
 // MARK: - Brand palette

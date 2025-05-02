@@ -6,119 +6,104 @@
 //
 import SwiftUI
 
-import SwiftUI
-
+// MARK: — Form for Add & Edit
 struct ClothingFormView: View {
     @Binding var item: ClothingItem
-    @Environment(\.presentationMode) var presentationMode
+    @Binding var isPresented: Bool
     @EnvironmentObject var viewModel: WardrobeViewModel
     @State private var showExitAlert = false
 
+    private var isEditingMode: Bool {
+        viewModel.wardrobeItems.contains(where: { $0.id == item.id })
+    }
+
     var body: some View {
         ZStack(alignment: .topLeading) {
-            // Полупрозрачный фон
             Color.black.opacity(0.2).ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Фото и кнопка выхода
                 ZStack(alignment: .topLeading) {
                     Image(uiImage: item.image)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(height: 300)
-                        .clipped()
-
-                    // Кнопка "назад"
-                    Button(action: {
-                        showExitAlert = true
-                    }) {
+                        .resizable().scaledToFill()
+                        .frame(height: 300).clipped()
+                    Button(action: { showExitAlert = true }) {
                         Image(systemName: "chevron.left")
-                            .foregroundColor(.white)
-                            .padding(12)
-                            .background(Color.black.opacity(0.6))
-                            .clipShape(Circle())
-                            .padding()
+                            .padding(12).background(Color.black.opacity(0.6)).clipShape(Circle())
+                            .foregroundColor(.white).padding()
                     }
                 }
 
-                // Карточка
                 VStack(spacing: 16) {
-                    // Название
                     HStack {
                         Text("Name:").bold()
                         TextField("Enter name", text: $item.title)
-                            .textFieldStyle(PlainTextFieldStyle())
-                            .padding(8)
-                            .background(Color.white)
-                            .cornerRadius(6)
-                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.gray.opacity(0.3)))
+                            .padding(8).background(Color.white).cornerRadius(6)
+                            .overlay(RoundedRectangle(cornerRadius: 6)
+                                .stroke(Color.gray.opacity(0.3)))
+                    }
+                    Group {
+                        FieldPicker(label: "Category", options: OutfitCategory.allCases.map { $0.rawValue }, selection: $item.category)
+                        FieldPicker(label: "Season", options: OutfitSeason.allCases.map { $0.rawValue }, selection: $item.season)
+                        FieldPicker(label: "Type", options: OutfitType.allCases.map { $0.rawValue }, selection: $item.type)
                     }
 
-                    // Категория
-                    VStack(alignment: .leading) {
-                        Text("Category:").bold()
-                        SelectionRow(
-                            options: OutfitCategory.allCases.map { $0.rawValue },
-                            selected: item.category?.rawValue ?? "",
-                            onSelect: { selected in
-                                item.category = OutfitCategory(rawValue: selected)
-                            }
-                        )
-                    }
-
-                    // Сезон
-                    VStack(alignment: .leading) {
-                        Text("Season").bold()
-                        SelectionRow(
-                            options: OutfitSeason.allCases.map { $0.rawValue },
-                            selected: item.season?.rawValue ?? "",
-                            onSelect: { selected in
-                                item.season = OutfitSeason(rawValue: selected)
-                            }
-                        )
-                    }
-
-                    // Тип
-                    VStack(alignment: .leading) {
-                        Text("Type").bold()
-                        SelectionRow(
-                            options: OutfitType.allCases.map { $0.rawValue },
-                            selected: item.type?.rawValue ?? "",
-                            onSelect: { selected in
-                                item.type = OutfitType(rawValue: selected)
-                            }
-                        )
-                    }
-
-                    // Кнопка "Add"
                     Button(action: {
-                        viewModel.addItem(item)
-                        presentationMode.wrappedValue.dismiss()
+                        if isEditingMode {
+                            viewModel.updateItem(item)
+                        } else {
+                            viewModel.addItem(item)
+                        }
+                        isPresented = false
                     }) {
-                        Text("Add")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.black)
-                            .foregroundColor(.white)
+                        Text(isEditingMode ? "Save" : "Add")
+                            .frame(maxWidth: .infinity).padding()
+                            .background(Color.black).foregroundColor(.white)
                             .cornerRadius(12)
                     }
+
+                    if isEditingMode {
+                        Button(role: .destructive) {
+                            viewModel.deleteItem(item)
+                            isPresented = false
+                        } label: {
+                            Text("Delete")
+                                .frame(maxWidth: .infinity).padding()
+                                .background(Color.red).foregroundColor(.white)
+                                .cornerRadius(12)
+                        }
+                    }
                 }
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(24)
-                .padding(.horizontal)
-                .padding(.bottom)
-                .shadow(color: .black.opacity(0.15), radius: 10, x: 0, y: -4)
+                .padding().background(Color(.systemGray6))
+                .cornerRadius(24).padding(.horizontal).padding(.bottom)
+                .shadow(color: .black.opacity(0.15), radius: 10)
             }
             .alert(isPresented: $showExitAlert) {
-                Alert(
-                    title: Text("Выйти без сохранения?"),
-                    message: Text("Ваш элемент гардероба не будет сохранён."),
-                    primaryButton: .destructive(Text("Выйти")) {
-                        presentationMode.wrappedValue.dismiss()
-                    },
-                    secondaryButton: .cancel()
-                )
+                Alert(title: Text("Exit without saving?"),
+                      message: Text("Your changes won't be saved."),
+                      primaryButton: .destructive(Text("Exit")) { isPresented = false },
+                      secondaryButton: .cancel())
+            }
+        }
+    }
+}
+
+// Picker helper
+struct FieldPicker<T: RawRepresentable & CaseIterable>: View where T.RawValue == String {
+    let label: String
+    let options: [String]
+    @Binding var selection: T?
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("\(label):").bold()
+            HStack(spacing: 8) {
+                ForEach(options, id: \.self) { opt in
+                    Button(opt.capitalized) { selection = T(rawValue: opt) }
+                        .padding(.vertical, 8).frame(maxWidth: .infinity)
+                        .background(selection?.rawValue == opt ? Color("CardAccent") : Color.white)
+                        .foregroundColor(selection?.rawValue == opt ? .white : .black)
+                        .cornerRadius(8).overlay(RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.3)))
+                }
             }
         }
     }

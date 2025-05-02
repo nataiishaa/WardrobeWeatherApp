@@ -1,120 +1,62 @@
-//
-//  WardrobeView.swift
-//  WearWeatherPred
-//
-//  Created by Наталья Захарова on 16.03.2025.
-//
-//import SwiftUI
-//
-//struct WardrobeView: View {
-//    @State private var selectedCategory: OutfitCategory = .item
-//    @ObservedObject var viewModel = WardrobeViewModel.shared
-//    @State private var selectedItemIndex: Int?
-//    @State private var isEditing = false
-//
-//    var filteredItems: [ClothingItem] {
-//        viewModel.wardrobeItems.filter { $0.category == selectedCategory }
-//    }
-//
-//    var body: some View {
-//        VStack {
-//            Text("My Wardrobe")
-//                .font(.title2.weight(.semibold))
-//            
-//
-//            Picker("Category", selection: $selectedCategory) {
-//                ForEach(OutfitCategory.allCases, id: \.self) { category in
-//                    Text(category.rawValue).tag(category)
-//                }
-//            }
-//            .pickerStyle(SegmentedPickerStyle())
-//            .padding()
-//
-//            ScrollView {
-//                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-//                    ForEach(filteredItems.indices, id: \.self) { index in
-//                        ClothingCardView(item: filteredItems[index])
-//                            .onTapGesture {
-//                                selectedItemIndex = index
-//                                isEditing = true
-//                            }
-//                    }
-//                }
-//                .padding()
-//            }
-//        }
-//  
-//
-//        .sheet(isPresented: $isEditing) {
-//            if let index = selectedItemIndex {
-//                ClothingFormView(item: $viewModel.wardrobeItems[index])
-//            }
-//        }
-//    }
-//}
-//
-//  WardrobeView.swift
-//  Look&Weather
-//
+import SwiftUI
 
 import SwiftUI
 
+// MARK: — Main Wardrobe Screen
 struct WardrobeView: View {
-
- 
     @Binding var isShowingWardrobe: Bool
     @Binding var isSettingsPresented: Bool
-
-    // ---------- внутренние стейты ----------
-    @State private var selectedCategory: OutfitCategory = .item
     @ObservedObject private var viewModel = WardrobeViewModel.shared
+    @State private var selectedCategory: OutfitCategory = .item
 
     @State private var selectedItemIndex: Int?
     @State private var isEditing = false
 
-    // ---------- вычисляемка ----------
+    @State private var showSourceDialog = false
+    @State private var showImagePicker = false
+    @State private var pickerSource: UIImagePickerController.SourceType = .photoLibrary
+    @State private var pickedImage: UIImage?
+    @State private var detectedTitle = ""
+    @State private var showAddForm = false
+
     private var filteredItems: [ClothingItem] {
         viewModel.wardrobeItems.filter { $0.category == selectedCategory }
     }
 
-    // ---------- UI ----------
     var body: some View {
         ZStack(alignment: .bottom) {
-
-            // фон
-            Color.brandPrimary.ignoresSafeArea()
+            Color.brandPrimary
+                .ignoresSafeArea()
 
             VStack(spacing: 0) {
-
-                // ---------- верхний хедер ----------
+                // Header moved closer to top
                 Text("My wardrobe")
                     .font(.title2.weight(.semibold))
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 20)
-                    .padding(.top, topInset + 8)
-                    .padding(.bottom, 16)
+                    .padding(.top, 44)
 
-                // ---------- светлая карточка‑контейнер ----------
+                // White container fills remaining space
                 VStack(spacing: 0) {
-
-                    // Picker категорий
+                    // Segmented filter
                     Picker("Category", selection: $selectedCategory) {
                         ForEach(OutfitCategory.allCases, id: \.self) { category in
-                            Text(category.rawValue).tag(category)
+                            Text(category.rawValue.capitalized)
+                                .tag(category)
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
                     .padding(.horizontal)
-                    .padding(.top, 6)
+                    .padding(.top, 16)
 
-                    // Сетка вещей
+                    Divider()
+                        .padding(.horizontal)
+                        .padding(.bottom, 8)
+
+                    // Grid of items
                     ScrollView {
-                        LazyVGrid(columns: [.init(.flexible()),
-                                            .init(.flexible()),
-                                            .init(.flexible())],
-                                  spacing: 16) {
-
+                        LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 3), spacing: 16) {
                             if filteredItems.isEmpty {
                                 Text("No items yet")
                                     .foregroundColor(.secondary)
@@ -130,34 +72,125 @@ struct WardrobeView: View {
                             }
                         }
                         .padding(.horizontal)
-                        .padding(.bottom, 110)   // место под бар
+                        .padding(.vertical, 16)
                     }
                 }
-                .background(Color.brandSurface)
-                .clipShape(RoundedRectangle(cornerRadius: 32, style: .continuous))
-                .padding(.horizontal, 8)
-                .padding(.bottom, 8)
-            }
+                .background(Color.white)
+                .cornerRadius(24, corners: [.topLeft, .topRight])
+                .edgesIgnoringSafeArea(.bottom)
 
-            // ---------- Bottom Bar ----------
-            BottomBarView(isSettingsPresented: $isSettingsPresented,
-                          isShowingWardrobe: $isShowingWardrobe)
-                .padding(.horizontal, 16)
-                .padding(.bottom, bottomInset)
+                // Bottom bar on white background
+                BottomBarView(
+                    activeTab: .wardrobe,
+                    openWardrobe: { isShowingWardrobe = false },
+                    openSettings: { isSettingsPresented.toggle() },
+                    addItem: { showSourceDialog = true }
+                )
+                .padding(.vertical, 8)
+                .background(Color.white)
+            }
         }
-        // ---------- форма редактирования ----------
-        .sheet(isPresented: $isEditing) {
-            if let idx = selectedItemIndex {
-                ClothingFormView(item: $viewModel.wardrobeItems[idx])
+        // Add & edit dialogs (unchanged)
+        .confirmationDialog("Add new item", isPresented: $showSourceDialog) {
+            Button("Take photo") { pickerSource = .camera; showImagePicker = true }
+            Button("Choose from gallery") { pickerSource = .photoLibrary; showImagePicker = true }
+            Button("Cancel", role: .cancel) {}
+        }
+        .fullScreenCover(isPresented: $showImagePicker) {
+            ImagePickerView(sourceType: pickerSource) { image in
+                showImagePicker = false
+                guard let image = image else { pickedImage = nil; return }
+                pickedImage = image
+                detectedTitle = "Detecting…"
+                ImageClassifier.shared.classify(image: image) { result in
+                    DispatchQueue.main.async {
+                        detectedTitle = result ?? "Unknown"
+                        showAddForm = true
+                    }
+                }
+            }
+        }
+        .overlay(alignment: .center) {
+            if showAddForm, let img = pickedImage {
+                ZStack(alignment: .topLeading) {
+                    Color.black.opacity(0.2)
+                        .ignoresSafeArea()
+                        .allowsHitTesting(false)
+                    ClothingFormView(
+                        item: .constant(ClothingItem(image: img,
+                                                     title: detectedTitle,
+                                                     category: .item,
+                                                     season: .hot,
+                                                     type: .daily)),
+                        isPresented: $showAddForm
+                    )
+                    .environmentObject(viewModel)
+                    .zIndex(1)
+                }
+            } else if isEditing, let idx = selectedItemIndex {
+                ZStack(alignment: .topLeading) {
+                    Color.black.opacity(0.2)
+                        .ignoresSafeArea()
+                        .allowsHitTesting(false)
+                    ClothingFormView(
+                        item: $viewModel.wardrobeItems[idx],
+                        isPresented: $isEditing
+                    )
+                    .environmentObject(viewModel)
+                    .zIndex(1)
+                }
+            }
+        }
+        .overlay {
+            if isSettingsPresented {
+                BottomBlurSheet(heightFactor: 0.5) {
+                    SettingsView(isPresented: $isSettingsPresented)
+                }
             }
         }
     }
 
-    // ---------- helper‑insets ----------
     private var topInset: CGFloat {
         UIApplication.shared.windows.first?.safeAreaInsets.top ?? 0
     }
     private var bottomInset: CGFloat {
         (UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0) + 4
+    }
+}
+
+
+
+struct BottomBlurSheet<Content: View>: View {
+    let heightFactor: CGFloat
+    let content: Content
+    init(heightFactor: CGFloat = 0.5,
+         @ViewBuilder content: () -> Content) {
+        self.heightFactor = heightFactor
+        self.content = content()
+    }
+    var body: some View {
+        GeometryReader { geo in
+            Rectangle()
+                .fill(.thinMaterial)
+                .opacity(0.6)
+                .ignoresSafeArea()
+                .onTapGesture { dismiss() }
+            
+            VStack { Spacer()
+                content
+                    .frame(maxWidth: .infinity)
+                    .frame(height: geo.size.height * heightFactor)
+                    .background(Color.brandPrimary)
+                    .clipShape(RoundedRectangle(cornerRadius: 32,
+                                                style: .continuous))
+                    .ignoresSafeArea(edges: .bottom)
+            }
+            .transition(.move(edge: .bottom))
+            .animation(.easeOut(duration: 0.25), value: UUID())
+        }
+    }
+    private func dismiss() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                        to: nil, from: nil, for: nil)
     }
 }

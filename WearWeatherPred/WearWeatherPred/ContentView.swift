@@ -7,19 +7,15 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var isShowingWardrobe = false
-    @State private var showSettings = false
-
+    @State private var showWardrobe = false
+    @State private var showSettingsFromWardrobe = false
+    
     var body: some View {
-        OutfitView(isShowingWardrobe: $isShowingWardrobe)
-            .environmentObject(WardrobeViewModel.shared)
-
-            .fullScreenCover(isPresented: $isShowingWardrobe) {
-                WardrobeView(isShowingWardrobe: $isShowingWardrobe,
-                             isSettingsPresented: $showSettings)
-                    .environmentObject(WardrobeViewModel.shared)
+        OutfitView(isShowingWardrobe: $showWardrobe)
+            .fullScreenCover(isPresented: $showWardrobe) {
+                WardrobeView(isShowingWardrobe: $showWardrobe,
+                             isSettingsPresented: $showSettingsFromWardrobe)
             }
-
     }
 }
 

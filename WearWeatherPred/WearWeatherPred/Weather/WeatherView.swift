@@ -2,7 +2,8 @@ import Foundation
 import SwiftUI
 
 struct WeatherView: View {
-    @ObservedObject var weatherService = WeatherService()
+    @StateObject private var weatherService = WeatherService()
+
     var city: String
     
     var weatherBackground: AnyView {
