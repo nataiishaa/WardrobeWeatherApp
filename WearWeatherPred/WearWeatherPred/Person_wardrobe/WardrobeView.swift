@@ -2,6 +2,7 @@ import SwiftUI
 
 import SwiftUI
 
+
 // MARK: — Main Wardrobe Screen
 struct WardrobeView: View {
     @Binding var isShowingWardrobe: Bool
@@ -27,7 +28,7 @@ struct WardrobeView: View {
         ZStack(alignment: .bottom) {
             Color.brandPrimary
                 .ignoresSafeArea()
-
+            
             VStack(spacing: 0) {
                 // Header moved closer to top
                 Text("My wardrobe")
@@ -36,8 +37,8 @@ struct WardrobeView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 20)
                     .padding(.top, 44)
-                    
-
+                
+                
                 // White container fills remaining space
                 VStack(spacing: 0) {
                     // Segmented filter
@@ -50,30 +51,34 @@ struct WardrobeView: View {
                     .pickerStyle(SegmentedPickerStyle())
                     .padding(.horizontal)
                     .padding(.top, 16)
-
+                    
                     Divider()
                         .padding(.horizontal)
                         .padding(.bottom, 8)
-
-                    // Grid of items
+                    
                     ScrollView {
-                        LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 3), spacing: 16) {
+                        LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 3),
+                                  spacing: 16) {
                             if filteredItems.isEmpty {
                                 Text("No items yet")
                                     .foregroundColor(.secondary)
                                     .padding(.top, 40)
                             } else {
-                                ForEach(filteredItems.indices, id: \.self) { index in
-                                    ClothingCardView(item: filteredItems[index])
+                                // Итерируем по самим объектам
+                                ForEach(filteredItems, id: \.id) { item in
+                                    ClothingCardView(item: item)
                                         .onTapGesture {
-                                            selectedItemIndex = index
-                                            isEditing = true
+                                            // Ищем его реальный индекс в общем массиве
+                                            if let idx = viewModel.wardrobeItems.firstIndex(where: { $0.id == item.id }) {
+                                                selectedItemIndex = idx
+                                                isEditing = true
+                                            }
                                         }
                                 }
                             }
                         }
-                        .padding(.horizontal)
-                        .padding(.vertical, 16)
+                                  .padding(.horizontal)
+                                  .padding(.vertical, 16)
                     }
                 }
                 .background(Color.white)
