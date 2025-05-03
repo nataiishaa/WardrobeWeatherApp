@@ -9,18 +9,16 @@ import SwiftUI
 struct SettingsView: View {
     @Binding var isPresented: Bool
     @State private var isNotificationsEnabled = false
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-
-            // ─── Header ─────────────────────────────
             HStack {
                 Text("Settings")
                     .montserrat(size: 16).bold()
                     .foregroundColor(.white)
-
+                
                 Spacer()
-
+                
                 Button { isPresented = false } label: {
                     Image(systemName: "xmark.circle.fill")
                         .font(.title)
@@ -29,10 +27,9 @@ struct SettingsView: View {
             }
             .padding(.horizontal)
             .padding(.vertical, 12)
-
+            
             Divider().background(Color.white.opacity(0.2))
-
-            // ─── About row ──────────────────────────
+            
             HStack {
                 Image(systemName: "info.circle")
                 Text("About")
@@ -43,8 +40,7 @@ struct SettingsView: View {
             .foregroundColor(.white)
             .padding(.horizontal)
             .padding(.vertical, 14)
-
-            // ─── Notifications row ──────────────────
+            
             HStack {
                 Image(systemName: "bell.badge")
                 Text("Push notifications")
@@ -56,10 +52,10 @@ struct SettingsView: View {
             .foregroundColor(.white)
             .padding(.horizontal)
             .padding(.vertical, 14)
-
+            
             Spacer()
         }
-       
+        
         .ignoresSafeArea(.container, edges: .bottom)
     }
 }

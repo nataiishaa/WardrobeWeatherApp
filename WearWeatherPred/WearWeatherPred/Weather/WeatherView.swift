@@ -2,8 +2,8 @@ import Foundation
 import SwiftUI
 
 struct WeatherView: View {
+    
     @StateObject private var weatherService = WeatherService()
-
     var city: String
     
     var weatherBackground: AnyView {
@@ -40,7 +40,7 @@ struct WeatherView: View {
     var body: some View {
             ZStack {
                 weatherBackground
-                    .frame(width: 300, height: 120)
+                    .frame(height: 120)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
 
                 VStack(alignment: .leading) {
@@ -56,9 +56,11 @@ struct WeatherView: View {
                 }
                 .padding()
             }
-            .frame(width: 200, height: 80)
+            .frame(maxWidth: .infinity)
+            .frame(height: 120)
             .onAppear {
                 weatherService.fetchWeather(city: city)
             }
         }
+    
 }

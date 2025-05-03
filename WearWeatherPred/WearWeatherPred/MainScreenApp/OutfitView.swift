@@ -16,19 +16,19 @@ struct OutfitView: View {
 
     var body: some View {
         ZStack {
-            // Фон всего экрана
+        
             Color.brandPrimary
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
                 // 1) WeatherView: растянутый на всю ширину
                 WeatherView(city: "Moscow")
+                    .frame(height: 120)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 180)
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 16)
 
-                // 2) Белый контейнер с фильтром и контентом
                 VStack(spacing: 0) {
-                    // Сегментированный контрол
                     Picker("Type", selection: $selectedCategory) {
                         ForEach(OutfitType.allCases, id: \.self) { type in
                             Text(type.rawValue.capitalized)
@@ -43,7 +43,6 @@ struct OutfitView: View {
                         .padding(.horizontal)
                         .padding(.bottom, 8)
 
-                    // Сетка карточек
                     ScrollView {
                         LazyVGrid(columns: [
                             GridItem(.flexible()),
@@ -58,11 +57,9 @@ struct OutfitView: View {
                     }
                 }
                 .background(Color.white)
-                // Скругляем только верхние углы
                 .cornerRadius(24, corners: [.topLeft, .topRight])
                 .edgesIgnoringSafeArea(.bottom)
 
-                // 3) Нижняя панель на белом фоне
                 BottomBarView(
                     activeTab: .outfit,
                     openWardrobe:  { isShowingWardrobe = true },
@@ -73,7 +70,6 @@ struct OutfitView: View {
                 .background(Color.white)
             }
         }
-        // — здесь остаётся ваша логика выбора фото и overlay формы —
         .confirmationDialog("Add new item", isPresented: $showSourceDialog) {
             Button("Take photo") { pickerSource = .camera; showImagePicker = true }
             Button("Choose from gallery") { pickerSource = .photoLibrary; showImagePicker = true }
@@ -121,7 +117,6 @@ struct OutfitView: View {
     }
 }
 
-// Утилита для скругления только отдельных углов
 extension View {
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         clipShape( RoundedCorner(radius: radius, corners: corners) )

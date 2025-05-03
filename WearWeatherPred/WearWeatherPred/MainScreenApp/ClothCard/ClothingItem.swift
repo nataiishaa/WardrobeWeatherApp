@@ -78,12 +78,10 @@ class WardrobeViewModel: ObservableObject {
 
     // MARK: - Persistence
     private func save() {
-        // 1. Transform to DTOs & write images
         let dtos: [ClothingItemDTO] = wardrobeItems.compactMap { item in
             guard let jpegData = item.image.jpegData(compressionQuality: 0.8) else { return nil }
             let filename = "\(item.id).jpg"
             let fileURL = imageURL(for: filename)
-            // write image only if not already there
             if !FileManager.default.fileExists(atPath: fileURL.path) {
                 try? jpegData.write(to: fileURL)
             }
@@ -118,7 +116,7 @@ class WardrobeViewModel: ObservableObject {
                                     type: dto.type.flatMap { OutfitType(rawValue: $0) },
                                     id: dto.id)
             }
-            self.wardrobeItems = items // will re‑save, but inexpensive
+            self.wardrobeItems = items
         } catch {
             print("[Wardrobe] Failed to load: \(error)")
         }
@@ -131,7 +129,6 @@ class WardrobeViewModel: ObservableObject {
     }
 }
 
-// MARK: - ClothingItem updated to accept id injection
 extension ClothingItem {
     init(image: UIImage,
          title: String,
