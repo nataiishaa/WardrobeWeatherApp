@@ -34,20 +34,23 @@ struct ClothingFormView: View {
                 }
 
                 VStack(spacing: 16) {
-                    HStack {
-                        Text("Name:")
-                            .montserrat(size: 16).bold()
-                        TextField("Enter name", text: $item.title)
-                        
-                            .padding(8).background(Color.white).cornerRadius(6)
-                            .overlay(RoundedRectangle(cornerRadius: 6)
-                                .stroke(Color.gray.opacity(0.3)))
+                    VStack {
+                        HStack {
+                            Text("Name:")
+                                .montserrat(size: 16).bold()
+                            TextField("Enter name", text: $item.title)
+                            
+                                .padding(8).background(Color.white).cornerRadius(6)
+                                .overlay(RoundedRectangle(cornerRadius: 6)
+                                    .stroke(Color.gray.opacity(0.3)))
+                        }
+                        Group {
+                            FieldPicker(label: "Category", options: OutfitCategory.allCases.map { $0.rawValue }, selection: $item.category)
+                            FieldPicker(label: "Season", options: OutfitSeason.allCases.map { $0.rawValue }, selection: $item.season)
+                            FieldPicker(label: "Type", options: OutfitType.allCases.map { $0.rawValue }, selection: $item.type)
+                        }
                     }
-                    Group {
-                        FieldPicker(label: "Category", options: OutfitCategory.allCases.map { $0.rawValue }, selection: $item.category)
-                        FieldPicker(label: "Season", options: OutfitSeason.allCases.map { $0.rawValue }, selection: $item.season)
-                        FieldPicker(label: "Type", options: OutfitType.allCases.map { $0.rawValue }, selection: $item.type)
-                    }
+                    .frame(height: 300)
 
                     Button(action: {
                         if isEditingMode {
