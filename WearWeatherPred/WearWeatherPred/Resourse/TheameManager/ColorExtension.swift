@@ -23,12 +23,3 @@ extension View {
             .background(Color.brandPrimary)
     }
 }
-
-
-// MARK: — Расширение Text для Montserrat без изменения размера
-extension Text {
-    /// Применяет Montserrat, сохраняя переданный размер
-    func montserrat(size: CGFloat) -> some View {
-        self.font(.custom("Montserrat-Regular", size: size))
-    }
-}

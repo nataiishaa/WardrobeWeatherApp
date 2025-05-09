@@ -124,7 +124,6 @@ struct OutfitView: View {
                 }
             }
         }
-        // custom bottom sheet for form & settings
         .overlay {
             if showClothingForm {
                 ZStack {
@@ -161,13 +160,9 @@ struct OutfitView: View {
     }
 }
 
-//--- добавьте прямо ПОД OutfitView, ДО extension OutfitView { … }  ---
-
-/// слой (layer) – нам нужен, чтобы понимать: верх, низ, куртка и т.д.
 enum ClothingLayer { case top, bottom, outer, shoes, accessory, unknown }
 
 extension ClothingItem {
-    /// Грубая эвристика по title (достаточна, пока нет поля `layer`)
     var layer: ClothingLayer {
         let key = title.lowercased()
         switch category {
@@ -252,54 +247,6 @@ extension OutfitView {
     }
 }
 
-//// MARK: – helpers
-//extension OutfitView {
-//
-//    @MainActor
-//    private func regenerateIfPossible() async {
-//        guard let w = weatherService.weather else { return }
-//        isLoading = true
-//
-//        let t = w.main.temp
-//        let isRain = w.weather.first?.main == "Rain"
-//
-//        // 1. разделяем по категории
-//        let tops     = wardrobeVM.wardrobeItems.filter { $0.category == .item && ($0.type == .daily || $0.type == selectedCategory) }
-//        let bottoms  = wardrobeVM.wardrobeItems.filter { $0.category == .item }
-//        let shoesArr = wardrobeVM.wardrobeItems.filter { $0.category == .shoes }
-//
-//        // 2. быстрый фильтр по погоде
-//        func okForTemp(_ item: ClothingItem) -> Bool {
-//            switch t {
-//            case ...0:    return item.season == .cold
-//            case 0..<15: return item.season != .hot
-//            case 15..<25:return item.season != .cold
-//            default:     return item.season == .hot
-//            }
-//        }
-//        let topsOK    = tops.filter(okForTemp)
-//        let bottomsOK = bottoms.filter(okForTemp)
-//        let shoesOK   = isRain ? shoesArr.filter { $0.season == .rainy } : shoesArr
-//
-//        guard
-//            let top    = topsOK.randomElement(),
-//            let bottom = bottomsOK.randomElement(),
-//            let shoes  = shoesOK.randomElement()
-//        else {
-//            llmCollages = []           // ничего не подобралось
-//            isLoading = false
-//            return
-//        }
-//
-//        // 3. делаем коллаж поверх изображений без фона
-//        let comboIDs = [top.id, bottom.id, shoes.id]
-//        let dict     = Dictionary(uniqueKeysWithValues: wardrobeVM.wardrobeItems.map{($0.id,$0)})
-//        llmCollages  = [CollageBuilder.build(from: comboIDs, wardrobe: dict)].compactMap { $0 }
-//
-//        isLoading = false
-//    }
-//}
-//
 extension View {
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         clipShape( RoundedCorner(radius: radius, corners: corners) )

@@ -1,48 +1,11 @@
+//
+//  WardrobeViewModel.swift
+//  WearWeatherPred
+//
+//  Created by Наталья Захарова on 09.05.2025.
+//
 import SwiftUI
 import UIKit
-
-struct ClothingItem: Identifiable {
-    let id: UUID
-    var image: UIImage
-    var title: String
-    var category: OutfitCategory?
-    var season: OutfitSeason?
-    var type: OutfitType?
-}
-
-enum OutfitCategory: String, CaseIterable {
-    case accessories = "Accessories"
-    case item = "Item"
-    case shoes = "Shoes"
-}
-
-enum OutfitSeason: String, CaseIterable {
-    case hot = "hot"
-    case cold = "cold"
-    case rainy = "rainy"
-}
-
-
-enum OutfitType: String, CaseIterable {
-    case daily = "daily"
-    case casual = "casual"
-    case party = "party"
-}
-
-
-
-
-import SwiftUI
-import UIKit
-
-struct ClothingItemDTO: Codable {
-    let id: UUID
-    let title: String
-    let category: String?
-    let season: String?
-    let type: String?
-    let imageFilename: String
-}
 
 class WardrobeViewModel: ObservableObject {
     // MARK: - Singleton
@@ -53,7 +16,7 @@ class WardrobeViewModel: ObservableObject {
 
     // MARK: - Published items
     @Published var wardrobeItems: [ClothingItem] = [] {
-        didSet { save() } 
+        didSet { save() }
     }
 
     // MARK: - File locations
@@ -64,12 +27,12 @@ class WardrobeViewModel: ObservableObject {
 
     // MARK: - Public API
     func addItem(_ item: ClothingItem) {
-        wardrobeItems.append(item) // didSet triggers save()
+        wardrobeItems.append(item)
     }
 
     func updateItem(_ item: ClothingItem) {
         guard let index = wardrobeItems.firstIndex(where: { $0.id == item.id }) else { return }
-        wardrobeItems[index] = item // didSet saves
+        wardrobeItems[index] = item
     }
 
     func deleteItem(_ item: ClothingItem) {
@@ -126,21 +89,5 @@ class WardrobeViewModel: ObservableObject {
     private func imageURL(for name: String) -> URL {
         let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         return docs.appendingPathComponent(name)
-    }
-}
-
-extension ClothingItem {
-    init(image: UIImage,
-         title: String,
-         category: OutfitCategory? = nil,
-         season: OutfitSeason? = nil,
-         type: OutfitType? = nil,
-         id: UUID = UUID()) {
-        self.id = id
-        self.image = image
-        self.title = title
-        self.category = category
-        self.season = season
-        self.type = type
     }
 }

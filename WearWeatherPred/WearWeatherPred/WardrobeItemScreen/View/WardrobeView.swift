@@ -1,8 +1,5 @@
 import SwiftUI
 
-import SwiftUI
-
-
 // MARK: — Main Wardrobe Screen
 struct WardrobeView: View {
     @Binding var isShowingWardrobe: Bool
@@ -30,7 +27,6 @@ struct WardrobeView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // Header moved closer to top
                 Text("My wardrobe")
                     .montserrat(size: 30).bold()
                     .foregroundColor(.white)
@@ -39,9 +35,7 @@ struct WardrobeView: View {
                     .padding(.top, 44)
                 
                 
-                // White container fills remaining space
                 VStack(spacing: 0) {
-                    // Segmented filter
                     Picker("Category", selection: $selectedCategory) {
                         ForEach(OutfitCategory.allCases, id: \.self) { category in
                             Text(category.rawValue.capitalized)
@@ -64,11 +58,9 @@ struct WardrobeView: View {
                                     .foregroundColor(.secondary)
                                     .padding(.top, 40)
                             } else {
-                                // Итерируем по самим объектам
                                 ForEach(filteredItems, id: \.id) { item in
                                     ClothingCardView(item: item)
                                         .onTapGesture {
-                                            // Ищем его реальный индекс в общем массиве
                                             if let idx = viewModel.wardrobeItems.firstIndex(where: { $0.id == item.id }) {
                                                 selectedItemIndex = idx
                                                 isEditing = true
@@ -85,7 +77,6 @@ struct WardrobeView: View {
                 .cornerRadius(24, corners: [.topLeft, .topRight])
                 .edgesIgnoringSafeArea(.bottom)
 
-                // Bottom bar on white background
                 BottomBarView(
                     activeTab: .wardrobe,
                     openWardrobe: { isShowingWardrobe = false },
