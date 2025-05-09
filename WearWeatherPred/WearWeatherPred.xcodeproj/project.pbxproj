@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A23E55282DCE1CB200DAC035 /* DeepLabV3.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = A23E55272DCE1CB200DAC035 /* DeepLabV3.mlmodel */; };
 		A2D1425C2D870054003B6AD9 /* MobileNetV2.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = A2D1425B2D870054003B6AD9 /* MobileNetV2.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A23E55272DCE1CB200DAC035 /* DeepLabV3.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = DeepLabV3.mlmodel; sourceTree = "<group>"; };
 		A2D142262D86DA7E003B6AD9 /* WearWeatherPred.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WearWeatherPred.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2D1425B2D870054003B6AD9 /* MobileNetV2.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MobileNetV2.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -50,6 +52,7 @@
 		A2D1421D2D86DA7E003B6AD9 = {
 			isa = PBXGroup;
 			children = (
+				A23E55272DCE1CB200DAC035 /* DeepLabV3.mlmodel */,
 				A2D1425B2D870054003B6AD9 /* MobileNetV2.mlmodel */,
 				A2D142282D86DA7E003B6AD9 /* WearWeatherPred */,
 				A2D142272D86DA7E003B6AD9 /* Products */,
@@ -139,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2D1425C2D870054003B6AD9 /* MobileNetV2.mlmodel in Sources */,
+				A23E55282DCE1CB200DAC035 /* DeepLabV3.mlmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

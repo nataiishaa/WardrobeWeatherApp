@@ -27,10 +27,10 @@ struct OutfitView: View {
     private let wardrobeVM = WardrobeViewModel.shared
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .bottom) {
             Color.brandPrimary
                 .ignoresSafeArea()
-
+            
             VStack(spacing: 0) {
                 // 1) Weather header
                 WeatherView(city: "Moscow")
@@ -53,26 +53,39 @@ struct OutfitView: View {
                         .padding(.bottom, 8)
 
                     ScrollView {
-                        LazyVGrid(
-                            columns: [
-                                GridItem(.flexible()),
-                                GridItem(.flexible())
-                            ],
-                            spacing: 16
-                        ) {
-                            if isLoading {
-                                ProgressView()
-                                    .padding(.top, 40)
-                            } else {
-                                ForEach(llmCollages, id: \.itemIDs) { col in
-                                    Image(uiImage: col.image)
-                                        .resizable().scaledToFit()
-                                        .cornerRadius(12)
+                        if isLoading {
+                            ProgressView()
+                                .padding(.top, 40)
+                        } else if llmCollages.isEmpty {
+                            VStack(spacing: 16) {
+                                Image(systemName: "tshirt.fill")
+                                    .font(.system(size: 50))
+                                    .foregroundColor(.gray)
+                                Text("No outfits yet")
+                                    .font(.headline)
+                                    .foregroundColor(.gray)
+                                Text("Add some clothes to your wardrobe to get outfit recommendations")
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.horizontal)
+                            }
+                            .padding(.top, 60)
+                        } else {
+                            LazyVGrid(
+                                columns: [
+                                    GridItem(.flexible(), spacing: 16),
+                                    GridItem(.flexible(), spacing: 16)
+                                ],
+                                spacing: 16
+                            ) {
+                                ForEach(llmCollages, id: \.itemIDs) { collage in
+                                    OutfitCardView(collage: collage)
                                 }
                             }
+                            .padding(.horizontal)
+                            .padding(.vertical, 16)
                         }
-                        .padding(.horizontal)
-                        .padding(.vertical, 16)
                     }
                 }
                 .background(Color.white)
@@ -160,43 +173,18 @@ struct OutfitView: View {
     }
 }
 
-enum ClothingLayer { case top, bottom, outer, shoes, accessory, unknown }
-
-extension ClothingItem {
-    var layer: ClothingLayer {
-        let key = title.lowercased()
-        switch category {
-        case .shoes:              return .shoes
-        case .accessories:        return .accessory
-        default:
-            if key.contains("jacket") || key.contains("coat") || key.contains("hoodie") || key.contains("sweater") {
-                return .outer
-            }
-            if key.contains("pants") || key.contains("trousers") || key.contains("jeans") || key.contains("skirt") {
-                return .bottom
-            }
-            if key.contains("shirt") || key.contains("t-shirt") || key.contains("blouse") {
-                return .top
-            }
-            return .unknown
-        }
-    }
-}
-
 extension OutfitView {
-
     @MainActor
     private func regenerateIfPossible() async {
-
         guard let w = weatherService.weather else { return }
         isLoading = true
 
-        let t       = w.main.temp
-        let isRain  = w.weather.first?.main == "Rain"
+        let t = w.main.temp
+        let isRain = w.weather.first?.main == "Rain"
 
         let itemsByLayer = Dictionary(grouping: wardrobeVM.wardrobeItems, by: \.layer)
 
-        func items(_ layer: ClothingLayer) -> [ClothingItem] {
+        func items(_ layer: Layer) -> [ClothingItem] {
             itemsByLayer[layer] ?? []
         }
 
@@ -210,17 +198,17 @@ extension OutfitView {
             }
         }
 
-        let topsOK     = items(.top)     .filter(okTemp)
-        let bottomsOK  = items(.bottom)  .filter(okTemp)
-        let outerOK    = items(.outer)   .filter(okTemp)
-        let shoesBase  = items(.shoes)   .filter(okTemp)
-        let shoesOK    = isRain ? shoesBase.filter { $0.season == .rainy } : shoesBase
-        let extrasOK   = items(.accessory)
+        let topsOK = items(.top).filter(okTemp)
+        let bottomsOK = items(.bottom).filter(okTemp)
+        let outerOK = items(.outer).filter(okTemp)
+        let shoesBase = items(.shoes).filter(okTemp)
+        let shoesOK = isRain ? shoesBase.filter { $0.season == .rainy } : shoesBase
+        let extrasOK = items(.accessory)
 
         guard
-            let top    = topsOK.randomElement(),
+            let top = topsOK.randomElement(),
             let bottom = bottomsOK.randomElement(),
-            let shoes  = shoesOK.randomElement() ?? shoesBase.randomElement()
+            let shoes = shoesOK.randomElement() ?? shoesBase.randomElement()
         else {
             llmCollages = []
             isLoading = false
@@ -239,10 +227,11 @@ extension OutfitView {
         if let o = outerPick { ids.append(o.id) }
         ids.append(contentsOf: chosenExtras.map(\.id))
 
-        // собираем коллаж
-        let dict = Dictionary(uniqueKeysWithValues: wardrobeVM.wardrobeItems.map { ($0.id, $0) })
-        llmCollages = [CollageBuilder.build(from: ids, wardrobe: dict)].compactMap { $0 }
-
+        // Создаем коллаж
+        if let collage = CollageBuilder.build(from: ids, wardrobe: Dictionary(uniqueKeysWithValues: wardrobeVM.wardrobeItems.map { ($0.id, $0) })) {
+            llmCollages = [collage]
+        }
+        
         isLoading = false
     }
 }

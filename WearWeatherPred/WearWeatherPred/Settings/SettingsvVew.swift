@@ -9,6 +9,7 @@ import SwiftUI
 struct SettingsView: View {
     @Binding var isPresented: Bool
     @State private var isNotificationsEnabled = false
+    @State private var showAbout = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -30,16 +31,20 @@ struct SettingsView: View {
             
             Divider().background(Color.white.opacity(0.2))
             
-            HStack {
-                Image(systemName: "info.circle")
-                Text("About")
-                Spacer()
-                Image(systemName: "chevron.right")
-                    .opacity(0.6)
+            Button {
+                showAbout = true
+            } label: {
+                HStack {
+                    Image(systemName: "info.circle")
+                    Text("About")
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .opacity(0.6)
+                }
+                .foregroundColor(.white)
+                .padding(.horizontal)
+                .padding(.vertical, 14)
             }
-            .foregroundColor(.white)
-            .padding(.horizontal)
-            .padding(.vertical, 14)
             
             HStack {
                 Image(systemName: "bell.badge")
@@ -55,7 +60,9 @@ struct SettingsView: View {
             
             Spacer()
         }
-        
         .ignoresSafeArea(.container, edges: .bottom)
+        .sheet(isPresented: $showAbout) {
+            AboutView()
+        }
     }
 }

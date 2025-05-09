@@ -20,7 +20,7 @@ class ImageClassifier {
             let mlModel = try MobileNetV2(configuration: MLModelConfiguration()).model
             self.model = try VNCoreMLModel(for: mlModel)
         } catch {
-            print("Ошибка загрузки модели: \(error)")
+            print("Error loading model: \(error)")
         }
     }
 
