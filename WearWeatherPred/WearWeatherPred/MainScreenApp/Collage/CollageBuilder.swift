@@ -1,29 +1,29 @@
 import UIKit
 
 enum Layer: Int, CaseIterable {
-    case bottom = 0
-    case top = 1
+    case top = 0
+    case bottom = 1
     case outer = 2
     case shoes = 3
     case accessory = 4
     
     var size: CGSize {
         switch self {
-        case .bottom: return CGSize(width: 200, height: 300)
-        case .top: return CGSize(width: 180, height: 250)
-        case .outer: return CGSize(width: 220, height: 320)
-        case .shoes: return CGSize(width: 160, height: 120)
-        case .accessory: return CGSize(width: 140, height: 140)
+        case .top: return CGSize(width: 250, height: 350)
+        case .bottom: return CGSize(width: 280, height: 400)
+        case .outer: return CGSize(width: 300, height: 450)
+        case .shoes: return CGSize(width: 220, height: 160)
+        case .accessory: return CGSize(width: 180, height: 180)
         }
     }
     
     var position: CGPoint {
         switch self {
-        case .bottom: return CGPoint(x: 100, y: 200)
-        case .top: return CGPoint(x: 120, y: 100)
-        case .outer: return CGPoint(x: 90, y: 80)
-        case .shoes: return CGPoint(x: 130, y: 500)
-        case .accessory: return CGPoint(x: 20, y: 150)
+        case .top: return CGPoint(x: 180, y: 150)
+        case .bottom: return CGPoint(x: 160, y: 300)
+        case .outer: return CGPoint(x: 150, y: 120)
+        case .shoes: return CGPoint(x: 180, y: 650)
+        case .accessory: return CGPoint(x: 50, y: 250)
         }
     }
 }
@@ -57,6 +57,14 @@ final class CollageBuilder {
             UIColor.white.setFill()
             ctx.fill(CGRect(origin: .zero, size: size))
             
+            // Enable alpha channel
+            ctx.cgContext.setAllowsAntialiasing(true)
+            ctx.cgContext.setShouldAntialias(true)
+            ctx.cgContext.setAllowsFontSmoothing(true)
+            ctx.cgContext.setShouldSmoothFonts(true)
+            ctx.cgContext.setAllowsFontSubpixelPositioning(true)
+            ctx.cgContext.setShouldSubpixelPositionFonts(true)
+            
             // Group items by layer
             let itemsByLayer = Dictionary(grouping: items) { $0.layer }
             
@@ -67,7 +75,7 @@ final class CollageBuilder {
                         if let processedImage = processImage(item.image) {
                             let rect = CGRect(origin: layer.position,
                                            size: layer.size)
-                            processedImage.draw(in: rect)
+                            processedImage.draw(in: rect, blendMode: .normal, alpha: 1.0)
                         }
                     }
                 }
@@ -94,9 +102,17 @@ final class CollageBuilder {
             newSize.width = targetSize.height * aspectRatio
         }
         
+        // Create a transparent background
         let renderer = UIGraphicsImageRenderer(size: newSize)
-        return renderer.image { ctx in
+        let resizedImage = renderer.image { ctx in
+            // Clear the background
+            UIColor.clear.setFill()
+            ctx.fill(CGRect(origin: .zero, size: newSize))
+            
+            // Draw the image with transparency
             noBackgroundImage.draw(in: CGRect(origin: .zero, size: newSize))
         }
+        
+        return resizedImage
     }
 }

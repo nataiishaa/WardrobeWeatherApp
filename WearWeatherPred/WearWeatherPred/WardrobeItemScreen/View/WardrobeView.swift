@@ -5,7 +5,8 @@ struct WardrobeView: View {
     @Binding var isShowingWardrobe: Bool
     @Binding var isSettingsPresented: Bool
     @ObservedObject private var viewModel = WardrobeViewModel.shared
-    @State private var selectedCategory: OutfitCategory = .item
+    @State private var showSettings = false
+    @State private var selectedCategory: OutfitCategory = .top
 
     @State private var selectedItemIndex: Int?
     @State private var isEditing = false
@@ -116,7 +117,7 @@ struct WardrobeView: View {
                     ClothingFormView(
                         item: .constant(ClothingItem(image: img,
                                                      title: detectedTitle,
-                                                     category: .item,
+                                                     category: .top,
                                                      season: .hot,
                                                      type: .daily)),
                         isPresented: $showAddForm

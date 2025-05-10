@@ -5,45 +5,29 @@ struct ClothingItem: Identifiable {
     let id: UUID
     var image: UIImage
     var title: String
-    var category: OutfitCategory?
+    var category: OutfitCategory
     var season: OutfitSeason?
     var type: OutfitType?
+    var density: OutfitDensity?
+    var isWaterproof: Bool
     
     var layer: Layer {
-        let key = title.lowercased()
-        
-        // First check category
-        if let category = category {
-            switch category {
-            case .shoes: return .shoes
-            case .accessories: return .accessory
-            case .item: break // Continue to keyword check
-            }
+        switch category {
+        case .top: return .top
+        case .bottom: return .bottom
+        case .outer: return .outer
+        case .shoes: return .shoes
+        case .accessories: return .accessory
         }
-        
-        // Then check keywords
-        if key.contains("jacket") || key.contains("coat") || key.contains("hoodie") || 
-           key.contains("sweater") || key.contains("cardigan") || key.contains("blazer") {
-            return .outer
-        }
-        if key.contains("pants") || key.contains("trousers") || key.contains("jeans") || 
-           key.contains("skirt") || key.contains("shorts") || key.contains("leggings") {
-            return .bottom
-        }
-        if key.contains("shirt") || key.contains("t-shirt") || key.contains("blouse") || 
-           key.contains("top") || key.contains("sweater") || key.contains("dress") {
-            return .top
-        }
-        
-        // Default to top if no match found
-        return .top
     }
 }
 
 enum OutfitCategory: String, CaseIterable {
-    case accessories = "Accessories"
-    case item = "Item"
+    case top = "Top"
+    case bottom = "Bottom"
+    case outer = "Outerwear"
     case shoes = "Shoes"
+    case accessories = "Accessories"
 }
 
 enum OutfitSeason: String, CaseIterable {
@@ -58,12 +42,20 @@ enum OutfitType: String, CaseIterable {
     case party = "party"
 }
 
+enum OutfitDensity: String, CaseIterable {
+    case light = "light"
+    case medium = "medium"
+    case heavy = "heavy"
+}
+
 extension ClothingItem {
     init(image: UIImage,
          title: String,
-         category: OutfitCategory? = nil,
+         category: OutfitCategory,
          season: OutfitSeason? = nil,
          type: OutfitType? = nil,
+         density: OutfitDensity? = nil,
+         isWaterproof: Bool = false,
          id: UUID = UUID()) {
         self.id = id
         self.image = image
@@ -71,5 +63,7 @@ extension ClothingItem {
         self.category = category
         self.season = season
         self.type = type
+        self.density = density
+        self.isWaterproof = isWaterproof
     }
 }

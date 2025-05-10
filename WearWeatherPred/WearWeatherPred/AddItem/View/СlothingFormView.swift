@@ -12,6 +12,7 @@ struct ClothingFormView: View {
     @Binding var isPresented: Bool
     @EnvironmentObject var viewModel: WardrobeViewModel
     @State private var showExitAlert = false
+    @State private var imageScale: CGFloat = 1.0
 
     private var isEditingMode: Bool {
         viewModel.wardrobeItems.contains(where: { $0.id == item.id })
@@ -22,67 +23,190 @@ struct ClothingFormView: View {
             Color.black.opacity(0.2).ignoresSafeArea()
 
             VStack(spacing: 0) {
+                // Header with image
                 ZStack(alignment: .topLeading) {
                     Image(uiImage: item.image)
-                        .resizable().scaledToFill()
-                        .frame(height: 300).clipped()
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxHeight: 200)
+                        .background(Color.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .padding(.horizontal)
+                        .padding(.top, 8)
+                    
                     Button(action: { showExitAlert = true }) {
                         Image(systemName: "chevron.left")
-                            .padding(12).background(Color.black.opacity(0.6)).clipShape(Circle())
-                            .foregroundColor(.white).padding()
+                            .padding(12)
+                            .background(Color.black.opacity(0.6))
+                            .clipShape(Circle())
+                            .foregroundColor(.white)
+                            .padding()
                     }
                 }
 
-                VStack(spacing: 16) {
-                    VStack {
-                        HStack {
-                            Text("Name:")
-                                .montserrat(size: 16).bold()
+                // Form content
+                ScrollView {
+                    VStack(spacing: 16) {
+                        // Name field
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Name")
+                                .montserrat(size: 14).bold()
+                                .foregroundColor(.gray)
                             TextField("Enter name", text: $item.title)
+                                .padding(12)
+                                .background(Color.white)
+                                .cornerRadius(8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.gray.opacity(0.3))
+                                )
+                        }
+                        .padding(.horizontal)
+
+                        // Category and Season
+                        HStack(spacing: 12) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Category")
+                                    .montserrat(size: 14).bold()
+                                    .foregroundColor(.gray)
+                                Picker("", selection: $item.category) {
+                                    Text("Select category").tag(Optional<OutfitCategory>.none)
+                                    ForEach(OutfitCategory.allCases, id: \.self) { category in
+                                        Text(category.rawValue).tag(Optional(category))
+                                    }
+                                }
+                                .pickerStyle(MenuPickerStyle())
+                                .padding(12)
+                                .background(Color.white)
+                                .cornerRadius(8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.gray.opacity(0.3))
+                                )
+                            }
                             
-                                .padding(8).background(Color.white).cornerRadius(6)
-                                .overlay(RoundedRectangle(cornerRadius: 6)
-                                    .stroke(Color.gray.opacity(0.3)))
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Season")
+                                    .montserrat(size: 14).bold()
+                                    .foregroundColor(.gray)
+                                Picker("", selection: $item.season) {
+                                    Text("Select season").tag(Optional<OutfitSeason>.none)
+                                    ForEach(OutfitSeason.allCases, id: \.self) { season in
+                                        Text(season.rawValue).tag(Optional(season))
+                                    }
+                                }
+                                .pickerStyle(MenuPickerStyle())
+                                .padding(12)
+                                .background(Color.white)
+                                .cornerRadius(8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.gray.opacity(0.3))
+                                )
+                            }
                         }
-                        Group {
-                            FieldPicker(label: "Category", options: OutfitCategory.allCases.map { $0.rawValue }, selection: $item.category)
-                            FieldPicker(label: "Season", options: OutfitSeason.allCases.map { $0.rawValue }, selection: $item.season)
-                            FieldPicker(label: "Type", options: OutfitType.allCases.map { $0.rawValue }, selection: $item.type)
-                        }
-                    }
-                    .frame(height: 300)
+                        .padding(.horizontal)
 
-                    Button(action: {
-                        if isEditingMode {
-                            viewModel.updateItem(item)
-                        } else {
-                            viewModel.addItem(item)
+                        // Type and Density
+                        HStack(spacing: 12) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Type")
+                                    .montserrat(size: 14).bold()
+                                    .foregroundColor(.gray)
+                                Picker("", selection: $item.type) {
+                                    Text("Select type").tag(Optional<OutfitType>.none)
+                                    ForEach(OutfitType.allCases, id: \.self) { type in
+                                        Text(type.rawValue).tag(Optional(type))
+                                    }
+                                }
+                                .pickerStyle(MenuPickerStyle())
+                                .padding(12)
+                                .background(Color.white)
+                                .cornerRadius(8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.gray.opacity(0.3))
+                                )
+                            }
+                            
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Density")
+                                    .montserrat(size: 14).bold()
+                                    .foregroundColor(.gray)
+                                Picker("", selection: $item.density) {
+                                    Text("Select density").tag(Optional<OutfitDensity>.none)
+                                    ForEach(OutfitDensity.allCases, id: \.self) { density in
+                                        Text(density.rawValue).tag(Optional(density))
+                                    }
+                                }
+                                .pickerStyle(MenuPickerStyle())
+                                .padding(12)
+                                .background(Color.white)
+                                .cornerRadius(8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.gray.opacity(0.3))
+                                )
+                            }
                         }
-                        isPresented = false
-                    }) {
-                        Text(isEditingMode ? "Save" : "Add")
-                            .montserrat(size: 16).bold()
-                            .frame(maxWidth: .infinity).padding()
-                            .background(Color.black).foregroundColor(.white)
-                            .cornerRadius(12)
-                    }
+                        .padding(.horizontal)
 
-                    if isEditingMode {
-                        Button(role: .destructive) {
-                            viewModel.deleteItem(item)
-                            isPresented = false
-                        } label: {
-                            Text("Delete")
-                                .montserrat(size: 16).bold()
-                                .frame(maxWidth: .infinity).padding()
-                                .background(Color.red).foregroundColor(.white)
-                                .cornerRadius(12)
+                        // Weather protection
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Weather Protection")
+                                .montserrat(size: 14).bold()
+                                .foregroundColor(.gray)
+                            Toggle("Waterproof", isOn: $item.isWaterproof)
+                                .padding(12)
+                                .background(Color.white)
+                                .cornerRadius(8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.gray.opacity(0.3))
+                                )
                         }
+                        .padding(.horizontal)
+
+                        // Action buttons
+                        VStack(spacing: 12) {
+                            Button(action: {
+                                if isEditingMode {
+                                    viewModel.updateItem(item)
+                                } else {
+                                    viewModel.addItem(item)
+                                }
+                                isPresented = false
+                            }) {
+                                Text(isEditingMode ? "Save" : "Add")
+                                    .montserrat(size: 16).bold()
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.black)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(12)
+                            }
+
+                            if isEditingMode {
+                                Button(role: .destructive) {
+                                    viewModel.deleteItem(item)
+                                    isPresented = false
+                                } label: {
+                                    Text("Delete")
+                                        .montserrat(size: 16).bold()
+                                        .frame(maxWidth: .infinity)
+                                        .padding()
+                                        .background(Color.red)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(12)
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                        .padding(.top, 8)
                     }
+                    .padding(.vertical, 16)
                 }
-                .padding().background(Color(.systemGray6))
-                .cornerRadius(24).padding(.horizontal).padding(.bottom)
-                .shadow(color: .black.opacity(0.15), radius: 10)
+                .background(Color(.systemGray6))
             }
             .alert(isPresented: $showExitAlert) {
                 Alert(title: Text("Exit without saving?"),

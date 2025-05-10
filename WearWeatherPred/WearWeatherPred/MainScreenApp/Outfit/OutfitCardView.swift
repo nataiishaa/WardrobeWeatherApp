@@ -2,15 +2,31 @@ import SwiftUI
 
 struct OutfitCardView: View {
     let collage: OutfitCollage
+    // Получаем wardrobeItems из ViewModel
+    @ObservedObject private var wardrobeVM = WardrobeViewModel.shared
     
     var body: some View {
         VStack(spacing: 0) {
-            // Outfit Image
-            Image(uiImage: collage.image)
-                .resizable()
-                .scaledToFit()
-                .frame(height: 200)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
+            GeometryReader { geometry in
+                let width = min(geometry.size.width, 400)
+                let height = width * 1.5 // пропорция 2:3
+                ZStack {
+                    ForEach(layersToDisplay, id: \.id) { item in
+                        let layer = item.layer
+                        Image(uiImage: item.image)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: layer.size.width * (width / 400),
+                                   height: layer.size.height * (height / 600))
+                            .offset(x: (layer.position.x - 200) * (width / 400),
+                                    y: (layer.position.y - 300) * (height / 600))
+                            .zIndex(Double(layer.rawValue))
+                    }
+                }
+                .frame(width: width, height: height)
+                .clipShape(RoundedRectangle(cornerRadius: 16 * (width / 400)))
+            }
+            .aspectRatio(2/3, contentMode: .fit)
             
             // Card Footer
             HStack {
@@ -36,8 +52,8 @@ struct OutfitCardView: View {
                         .clipShape(Circle())
                 }
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
         }
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 16))
@@ -46,6 +62,12 @@ struct OutfitCardView: View {
             RoundedRectangle(cornerRadius: 16)
                 .stroke(Color.brandPrimary.opacity(0.1), lineWidth: 1)
         )
+    }
+    
+    private var layersToDisplay: [ClothingItem] {
+        collage.itemIDs.compactMap { id in
+            wardrobeVM.wardrobeItems.first(where: { $0.id == id })
+        }.sorted { $0.layer.rawValue < $1.layer.rawValue }
     }
 }
 

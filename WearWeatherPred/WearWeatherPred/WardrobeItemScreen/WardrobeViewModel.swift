@@ -7,6 +7,17 @@
 import SwiftUI
 import UIKit
 
+struct ClothingItemDTO: Codable {
+    let id: UUID
+    let title: String
+    let category: String
+    let season: String?
+    let type: String?
+    let density: String?
+    let isWaterproof: Bool
+    let imageFilename: String
+}
+
 class WardrobeViewModel: ObservableObject {
     // MARK: - Singleton
     static let shared = WardrobeViewModel()
@@ -50,9 +61,11 @@ class WardrobeViewModel: ObservableObject {
             }
             return ClothingItemDTO(id: item.id,
                                    title: item.title,
-                                   category: item.category?.rawValue,
+                                   category: item.category.rawValue,
                                    season: item.season?.rawValue,
                                    type: item.type?.rawValue,
+                                   density: item.density?.rawValue,
+                                   isWaterproof: item.isWaterproof,
                                    imageFilename: filename)
         }
 
@@ -72,11 +85,14 @@ class WardrobeViewModel: ObservableObject {
             let items: [ClothingItem] = dtos.compactMap { dto in
                 let fileURL = imageURL(for: dto.imageFilename)
                 guard let img = UIImage(contentsOfFile: fileURL.path) else { return nil }
+                guard let category = OutfitCategory(rawValue: dto.category) else { return nil }
                 return ClothingItem(image: img,
                                     title: dto.title,
-                                    category: dto.category.flatMap { OutfitCategory(rawValue: $0) },
+                                    category: category,
                                     season: dto.season.flatMap { OutfitSeason(rawValue: $0) },
                                     type: dto.type.flatMap { OutfitType(rawValue: $0) },
+                                    density: dto.density.flatMap { OutfitDensity(rawValue: $0) },
+                                    isWaterproof: dto.isWaterproof,
                                     id: dto.id)
             }
             self.wardrobeItems = items
