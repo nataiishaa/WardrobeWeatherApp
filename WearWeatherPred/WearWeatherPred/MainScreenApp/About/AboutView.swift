@@ -6,19 +6,16 @@ struct AboutView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
-                // App Logo or Icon
                 Image(systemName: "tshirt.fill")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 100, height: 100)
                     .foregroundColor(.brandPrimary)
                 
-                // App Name
                 Text("WearWeather")
                     .font(.title)
                     .fontWeight(.bold)
                 
-                // Developer Info
                 VStack(alignment: .leading, spacing: 15) {
                     Text("About Developer")
                         .font(.headline)
@@ -27,7 +24,6 @@ struct AboutView: View {
                         .font(.body)
                         .foregroundColor(.secondary)
                     
-                    // Contact Section
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Contact")
                             .font(.headline)

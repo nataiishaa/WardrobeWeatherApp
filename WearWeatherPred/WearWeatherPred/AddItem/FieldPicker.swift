@@ -1,9 +1,3 @@
-//
-//  FieldPicker.swift
-//  WearWeatherPred
-//
-//  Created by Наталья Захарова on 03.05.2025.
-//
 import SwiftUI
 
 struct FieldPicker<T: RawRepresentable & CaseIterable>: View where T.RawValue == String {

@@ -1,10 +1,3 @@
-//
-//  WeatherData.swift
-//  WearWeatherPred
-//
-//  Created by Наталья Захарова on 16.03.2025.
-//
-
 import Foundation
 import CoreML
 import Vision
@@ -36,18 +29,6 @@ struct WeatherData: Codable {
     }
 }
 
-
-struct Wind: Codable {
-    let speed: Double
-    let deg: Int
-    
-    enum CodingKeys: String, CodingKey {
-        case speed
-        case deg
-    }
-}
-
-
 func removeBackgroundWithCoreML(image: UIImage, completion: @escaping (UIImage?) -> Void) {
     guard let cgImage = image.cgImage else { completion(nil); return }
     let model = try! VNCoreMLModel(for: DeepLabV3().model)
@@ -57,7 +38,6 @@ func removeBackgroundWithCoreML(image: UIImage, completion: @escaping (UIImage?)
             completion(nil)
             return
         }
-        // Преобразуем mask в UIImage и применяем к исходному изображению
         let output = image.applyMask(mask: mask)
         completion(output)
     }
@@ -77,7 +57,6 @@ extension UIImage {
         UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, self.scale)
         guard let context = UIGraphicsGetCurrentContext() else { return nil }
 
-        // Маска — черно-белое изображение, где белое — объект, черное — фон
         context.clip(to: CGRect(x: 0, y: 0, width: width, height: height), mask: maskCgImage)
         context.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
 
@@ -86,7 +65,6 @@ extension UIImage {
         return result
     }
 
-    // Преобразование PixelBuffer в UIImage
     convenience init?(pixelBuffer: CVPixelBuffer) {
         let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
         let context = CIContext()

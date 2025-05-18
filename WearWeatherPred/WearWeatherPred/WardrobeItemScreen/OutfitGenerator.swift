@@ -1,22 +1,4 @@
-import Foundation
 import SwiftUI
-
-struct OutfitItem: Identifiable {
-    let id = UUID()
-    let name: String
-    let category: ClothingCategory
-    let image: UIImage
-    let temperatureRange: ClosedRange<Double>
-    let isWaterproof: Bool
-    let isWindproof: Bool
-}
-
-enum ClothingCategory {
-    case top
-    case bottom
-    case outerwear
-    case accessory
-}
 
 class OutfitGenerator {
     private var wardrobeItems: [OutfitItem] = []
@@ -28,12 +10,10 @@ class OutfitGenerator {
     func generateOutfit(for weather: WeatherData) -> [OutfitItem] {
         var outfit: [OutfitItem] = []
         
-        // Filter items based on temperature
         let suitableItems = wardrobeItems.filter { item in
             item.temperatureRange.contains(weather.temperature)
         }
         
-        // Select appropriate items for each category
         if let top = selectTop(from: suitableItems, weather: weather) {
             outfit.append(top)
         }
@@ -68,12 +48,10 @@ class OutfitGenerator {
     private func selectOuterwear(from items: [OutfitItem], weather: WeatherData) -> OutfitItem? {
         let outerwearItems = items.filter { $0.category == .outerwear }
         
-        // Prioritize waterproof items if it's raining
         if weather.isRaining {
             return outerwearItems.filter { $0.isWaterproof }.first
         }
         
-        // Prioritize windproof items if it's windy
         if weather.isWindy {
             return outerwearItems.filter { $0.isWindproof }.first
         }
@@ -88,7 +66,6 @@ class OutfitGenerator {
     }
 }
 
-// Extension to create a collage from outfit items
 extension OutfitGenerator {
     func createOutfitCollage(from outfit: [OutfitItem]) -> UIImage? {
         let canvasSize = CGSize(width: 800, height: 1000)
@@ -96,7 +73,6 @@ extension OutfitGenerator {
         
         guard let context = UIGraphicsGetCurrentContext() else { return nil }
         
-        // Draw each item on the canvas
         for (index, item) in outfit.enumerated() {
             let itemSize = CGSize(width: 300, height: 400)
             let x = CGFloat(index % 2) * (itemSize.width + 50) + 50

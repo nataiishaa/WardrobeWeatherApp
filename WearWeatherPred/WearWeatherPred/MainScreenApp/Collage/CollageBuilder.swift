@@ -1,38 +1,5 @@
 import UIKit
 
-enum Layer: Int, CaseIterable {
-    case top = 0
-    case bottom = 1
-    case outer = 2
-    case shoes = 3
-    case accessory = 4
-    
-    var size: CGSize {
-        switch self {
-        case .top: return CGSize(width: 280, height: 380)
-        case .bottom: return CGSize(width: 280, height: 400)
-        case .outer: return CGSize(width: 320, height: 480)
-        case .shoes: return CGSize(width: 180, height: 120)
-        case .accessory: return CGSize(width: 180, height: 180)
-        }
-    }
-    
-    var position: CGPoint {
-        switch self {
-        case .top: return CGPoint(x: 160, y: 140)
-        case .bottom: return CGPoint(x: 160, y: 300)
-        case .outer: return CGPoint(x: 140, y: 100)
-        case .shoes: return CGPoint(x: 180, y: 580)
-        case .accessory: return CGPoint(x: 50, y: 250)
-        }
-    }
-}
-
-struct OutfitCollage {
-    let image: UIImage
-    let itemIDs: [UUID]
-}
-
 final class CollageBuilder {
     static let shared = CollageBuilder()
     private let backgroundRemover = BackgroundRemover.shared
@@ -53,7 +20,6 @@ final class CollageBuilder {
         
         let renderer = UIGraphicsImageRenderer(size: size)
         let img = renderer.image { ctx in
-            // Enable alpha channel and transparency
             ctx.cgContext.setAllowsAntialiasing(true)
             ctx.cgContext.setShouldAntialias(true)
             ctx.cgContext.setAllowsFontSmoothing(true)
@@ -61,14 +27,11 @@ final class CollageBuilder {
             ctx.cgContext.setAllowsFontSubpixelPositioning(true)
             ctx.cgContext.setShouldSubpixelPositionFonts(true)
             
-            // Clear the background to be transparent
             UIColor.clear.setFill()
             ctx.fill(CGRect(origin: .zero, size: size))
             
-            // Group items by layer
             let itemsByLayer = Dictionary(grouping: items) { $0.layer }
             
-            // Draw items in order of layers
             for layer in Layer.allCases {
                 if let layerItems = itemsByLayer[layer] {
                     for item in layerItems {
@@ -86,12 +49,10 @@ final class CollageBuilder {
     }
     
     private func processImage(_ image: UIImage) -> UIImage? {
-        // Remove background first
         guard let noBackgroundImage = backgroundRemover.removeBackground(from: image) else {
             return image
         }
         
-        // Resize while maintaining aspect ratio
         let targetSize = CGSize(width: 200, height: 200)
         let aspectRatio = image.size.width / image.size.height
         var newSize = targetSize
@@ -101,15 +62,11 @@ final class CollageBuilder {
         } else {
             newSize.width = targetSize.height * aspectRatio
         }
-        
-        // Create a transparent background
         let renderer = UIGraphicsImageRenderer(size: newSize)
         let resizedImage = renderer.image { ctx in
-            // Clear the background to be transparent
             UIColor.clear.setFill()
             ctx.fill(CGRect(origin: .zero, size: newSize))
             
-            // Draw the image with transparency
             noBackgroundImage.draw(in: CGRect(origin: .zero, size: newSize), blendMode: .normal, alpha: 1.0)
         }
         

@@ -32,12 +32,11 @@ struct OutfitView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // 1) Weather header
+
                 WeatherView(city: "Moscow")
                     .frame(maxWidth: .infinity)
                     .frame(height: 180)
 
-                // 2) Content container
                 VStack(spacing: 0) {
                     Picker("Type", selection: $selectedCategory) {
                         ForEach(OutfitType.allCases, id: \.self) { type in
@@ -132,7 +131,6 @@ struct OutfitView: View {
                 .cornerRadius(24, corners: [.topLeft, .topRight])
                 .edgesIgnoringSafeArea(.bottom)
 
-                // 3) Bottom bar
                 BottomBarView(
                     activeTab: .outfit,
                     openWardrobe:  { isShowingWardrobe = true },
@@ -536,7 +534,6 @@ extension OutfitView {
         shoes = shoesOK.randomElement()
         accessory = accessoriesOK.randomElement()
 
-        // If no matching items found, try to use any available items
         if top == nil {
             top = items(.top).randomElement()
             print("[Outfit] Using any available top: \(top?.title ?? "none")")
@@ -621,18 +618,5 @@ extension OutfitView {
 extension View {
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         clipShape( RoundedCorner(radius: radius, corners: corners) )
-    }
-}
-
-struct RoundedCorner: Shape {
-    var radius: CGFloat = .infinity
-    var corners: UIRectCorner = .allCorners
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(
-            roundedRect: rect,
-            byRoundingCorners: corners,
-            cornerRadii: CGSize(width: radius, height: radius)
-        )
-        return Path(path.cgPath)
     }
 }

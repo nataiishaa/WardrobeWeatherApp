@@ -2,14 +2,13 @@ import SwiftUI
 
 struct OutfitCardView: View {
     let collage: OutfitCollage
-    // Получаем wardrobeItems из ViewModel
     @ObservedObject private var wardrobeVM = WardrobeViewModel.shared
     
     var body: some View {
         VStack(spacing: 0) {
             GeometryReader { geometry in
                 let width = min(geometry.size.width, 400)
-                let height = width * 1.5 // пропорция 2:3
+                let height = width * 1.5 
                 ZStack {
                     ForEach(layersToDisplay, id: \.id) { item in
                         let layer = item.layer

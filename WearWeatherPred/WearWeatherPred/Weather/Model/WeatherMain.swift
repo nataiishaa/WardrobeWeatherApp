@@ -1,8 +1,3 @@
-//
-//  WeatherMain.swift
-//  WearWeatherPred
-//
-
 struct Main: Codable {
     let temp: Double
     let feels_like: Double
@@ -18,5 +13,3 @@ struct Main: Codable {
         case humidity
     }
 }
-
-

@@ -27,7 +27,7 @@ class BackgroundRemover {
     
     func removeBackground(from image: UIImage) -> UIImage? {
         guard let model = model, let cgImage = image.cgImage else {
-            return image // Return original image if model is not available
+            return image 
         }
         
         let request = VNCoreMLRequest(model: model) { request, error in
@@ -44,7 +44,7 @@ class BackgroundRemover {
         
         guard let results = request.results as? [VNCoreMLFeatureValueObservation],
               let segmentationMap = results.first?.featureValue.multiArrayValue else {
-            return image // Return original image if processing fails
+            return image
         }
         
         return createMaskedImage(from: image, segmentationMap: segmentationMap)
@@ -74,11 +74,9 @@ class BackgroundRemover {
         
         context.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
         
-        // Получаем размеры маски сегментации
         let maskWidth = segmentationMap.shape[0].intValue
         let maskHeight = segmentationMap.shape[1].intValue
         
-        // Масштабируем координаты изображения к размерам маски
         let scaleX = Double(maskWidth) / Double(width)
         let scaleY = Double(maskHeight) / Double(height)
         
@@ -87,22 +85,19 @@ class BackgroundRemover {
                 let pixelIndex = y * width + x
                 let dataIndex = pixelIndex * bytesPerPixel
                 
-                // Преобразуем координаты изображения в координаты маски
                 let maskX = Int(Double(x) * scaleX)
                 let maskY = Int(Double(y) * scaleY)
                 let maskIndex = maskY * maskWidth + maskX
                 
-                // Проверяем, что индекс в пределах маски
                 guard maskIndex < maskWidth * maskHeight else { continue }
                 
                 let segmentationValue = segmentationMap[maskIndex].intValue
                 
-                // Если это фон (0) или значение вне допустимого диапазона, делаем пиксель прозрачным
                 if segmentationValue == 0 {
-                    rawData[dataIndex] = 0     // R
-                    rawData[dataIndex + 1] = 0 // G
-                    rawData[dataIndex + 2] = 0 // B
-                    rawData[dataIndex + 3] = 0 // A
+                    rawData[dataIndex] = 0     
+                    rawData[dataIndex + 1] = 0
+                    rawData[dataIndex + 2] = 0
+                    rawData[dataIndex + 3] = 0
                 }
             }
         }

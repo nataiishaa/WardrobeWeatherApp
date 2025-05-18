@@ -1,9 +1,3 @@
-//
-//  WardrobeViewModel.swift
-//  WearWeatherPred
-//
-//  Created by Наталья Захарова on 09.05.2025.
-//
 import SwiftUI
 import UIKit
 

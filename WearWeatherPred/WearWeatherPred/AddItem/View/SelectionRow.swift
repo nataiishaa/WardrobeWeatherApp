@@ -1,9 +1,3 @@
-//
-//  SelectionRow.swift
-//  WearWeatherPred
-//
-//  Created by Наталья Захарова on 30.03.2025.
-//
 import SwiftUI
 
 struct SelectionRow: View {

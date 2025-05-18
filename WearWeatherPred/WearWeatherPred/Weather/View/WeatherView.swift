@@ -62,5 +62,4 @@ struct WeatherView: View {
                 weatherService.fetchWeather(city: city)
             }
         }
-    
 }
