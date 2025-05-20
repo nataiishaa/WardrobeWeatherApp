@@ -48,7 +48,7 @@ final class CollageBuilder {
         return OutfitCollage(image: img, itemIDs: ids)
     }
     
-    private func processImage(_ image: UIImage) -> UIImage? {
+     func processImage(_ image: UIImage) -> UIImage? {
         guard let noBackgroundImage = backgroundRemover.removeBackground(from: image) else {
             return image
         }
