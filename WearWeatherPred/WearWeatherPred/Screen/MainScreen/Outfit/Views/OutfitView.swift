@@ -255,7 +255,6 @@ extension OutfitView {
             itemsByLayer[layer] ?? []
         }
 
-        // Temperature matching with debug
         func okTemp(_ item: ClothingItem) -> Bool {
             let result = switch t {
             case ...0:      item.season == .cold
@@ -276,7 +275,6 @@ extension OutfitView {
             return result
         }
 
-        // Density matching with debug
         func okDensity(_ item: ClothingItem) -> Bool {
             guard let density = item.density else { 
                 print("[Outfit] Density check for \(item.title): true (no density set)")
@@ -303,7 +301,6 @@ extension OutfitView {
             return true
         }
 
-        // Filter items with debug
         let topsOK = items(.top)
             .filter(okTemp)
             .filter(okDensity)
@@ -337,14 +334,12 @@ extension OutfitView {
         print("  Shoes: \(shoesOK.count)")
         print("  Accessories: \(accessoriesOK.count)")
 
-        // Try to generate outfit with fallbacks
         var top: ClothingItem?
         var bottom: ClothingItem?
         var shoes: ClothingItem?
         var outer: ClothingItem?
         var accessory: ClothingItem?
 
-        // Try to find matching items
         top = topsOK.randomElement()
         bottom = bottomsOK.randomElement()
         shoes = shoesOK.randomElement()
@@ -363,28 +358,26 @@ extension OutfitView {
             print("[Outfit] Using any available shoes: \(shoes?.title ?? "none")")
         }
 
-        // Check if we have at least the basic items
         guard let top = top, let bottom = bottom, let shoes = shoes else {
             print("[Outfit] Failed to find basic items")
             llmCollages = []
             return
         }
 
-        // Select outerwear if needed
         let needOuter = t < 12 || isRain || isSnow || windSpeed > 5
         if needOuter {
             outer = outerOK.randomElement() ?? items(.outer).randomElement()
             print("[Outfit] Selected outerwear: \(outer?.title ?? "none")")
         }
 
-        // Create final outfit
         var ids = [top.id, bottom.id, shoes.id]
         if let o = outer { ids.append(o.id) }
         if let a = accessory { ids.append(a.id) }
 
         print("[Outfit] Final outfit IDs: \(ids)")
 
-        // Create collage
+        // MARK: -  Create collage
+        
         if let collage = CollageBuilder.build(from: ids, wardrobe: Dictionary(uniqueKeysWithValues: wardrobeVM.wardrobeItems.map { ($0.id, $0) })) {
             llmCollages = [collage]
             print("[Outfit] Successfully created collage")
@@ -408,7 +401,6 @@ extension OutfitView {
             missingItems.append("Shoes")
         }
         
-        // Check for weather-appropriate items
         if let weather = weatherService.weather {
             let t = weather.main.temp
             let isRain = weather.weather.first?.main == "Rain"
@@ -425,11 +417,5 @@ extension OutfitView {
         }
         
         return missingItems.isEmpty ? nil : missingItems
-    }
-}
-
-extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape( RoundedCorner(radius: radius, corners: corners) )
     }
 }

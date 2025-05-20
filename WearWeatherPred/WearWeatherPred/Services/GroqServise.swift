@@ -4,6 +4,7 @@ class GroqService {
     static let shared = GroqService()
     private let baseURL = "https://api.groq.com/openai/v1"
     private let apiKey: String
+    private var style: OutfitType?
     
     private init() {
         guard let key = Secrets.shared.apiKey(for: "GROQ_API_KEY") else {
@@ -13,6 +14,7 @@ class GroqService {
     }
     
     func generateOutfitRecommendation(weather: WeatherData, style: OutfitType, availableItems: [ClothingItem]) async throws -> [ClothingItem] {
+        self.style = style
         let prompt = """
         Based on the following weather conditions and available clothing items, suggest a complete outfit:
         
@@ -63,13 +65,18 @@ class GroqService {
     
     private func formatAvailableItems(_ items: [ClothingItem]) -> String {
         var result = ""
-        let itemsByLayer = Dictionary(grouping: items, by: \.layer)
+        // Filter items by style and group by layer
+        let filteredItems = items.filter { item in
+            // Include items that match the style or have no style specified
+            item.type == nil || item.type == style
+        }
+        let itemsByLayer = Dictionary(grouping: filteredItems, by: \.layer)
         
         for layer in Layer.allCases {
             if let layerItems = itemsByLayer[layer] {
                 result += "\n\(layer):\n"
                 for item in layerItems {
-                    result += "- \(item.title) (ID: \(item.id), Season: \(item.season?.rawValue ?? "any"), Waterproof: \(item.isWaterproof))\n"
+                    result += "- \(item.title) (ID: \(item.id), Season: \(item.season?.rawValue ?? "any"), Style: \(item.type?.rawValue ?? "any"), Waterproof: \(item.isWaterproof))\n"
                 }
             }
         }
@@ -96,7 +103,11 @@ class GroqService {
         for (layerName, itemId) in outfit {
             guard let layer = layerMapping[layerName],
                   let uuid = UUID(uuidString: itemId),
-                  let item = availableItems.first(where: { $0.id == uuid && $0.layer == layer }) else {
+                  let item = availableItems.first(where: { 
+                      $0.id == uuid && 
+                      $0.layer == layer && 
+                      (style == nil || $0.type == nil || $0.type == style)
+                  }) else {
                 continue
             }
             selectedItems.append(item)

@@ -88,12 +88,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A2D1421D2D86DA7E003B6AD9 = {
+		A2B1C36C2DE523A80057E1E6 /* MLModels */ = {
+			isa = PBXGroup;
+			children = (
+				A23E55272DCE1CB200DAC035 /* DeepLabV3.mlmodel */,
+				A2D1425B2D870054003B6AD9 /* MobileNetV2.mlmodel */,
+			);
+			path = MLModels;
+			sourceTree = "<group>";
+		};
+		A2B1C36D2DE523D00057E1E6 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
 				A2B1C35F2DE51B630057E1E6 /* Secrets.plist */,
-				A23E55272DCE1CB200DAC035 /* DeepLabV3.mlmodel */,
-				A2D1425B2D870054003B6AD9 /* MobileNetV2.mlmodel */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
+		A2D1421D2D86DA7E003B6AD9 = {
+			isa = PBXGroup;
+			children = (
+				A2B1C36D2DE523D00057E1E6 /* Configuration */,
+				A2B1C36C2DE523A80057E1E6 /* MLModels */,
 				A2D142282D86DA7E003B6AD9 /* WearWeatherPred */,
 				A22280532DE2028F00C53ADB /* Tests */,
 				A2D142272D86DA7E003B6AD9 /* Products */,

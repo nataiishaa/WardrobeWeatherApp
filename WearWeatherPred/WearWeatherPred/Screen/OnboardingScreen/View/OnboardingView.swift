@@ -1,122 +1,5 @@
 import SwiftUI
 
-struct HighlightedElement: View {
-    let message: String
-    let position: CGPoint
-    let size: CGSize
-    
-    var body: some View {
-        VStack(spacing: 8) {
-            Text(message)
-                .font(.subheadline)
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
-                .padding(8)
-                .background(Color.brandPrimary)
-                .cornerRadius(8)
-            
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.brandPrimary, lineWidth: 2)
-                .frame(width: size.width, height: size.height)
-                .background(Color.brandPrimary.opacity(0.2))
-        }
-        .position(position)
-    }
-}
-
-struct TutorialOverlay: View {
-    let message: String
-    let position: CGPoint
-    let showArrow: Bool
-    let showTapIcon: Bool
-    let alignment: Alignment
-    let highlightFrame: CGRect?
-    
-    var body: some View {
-        ZStack {
-            Color.black.opacity(0.7)
-                .ignoresSafeArea()
-            
-            if let frame = highlightFrame {
-                RoundedRectangle(cornerRadius: 25)
-                    .stroke(Color.brandPrimary, lineWidth: 2)
-                    .background(Color.brandPrimary.opacity(0.2))
-                    .frame(width: frame.width, height: frame.height)
-                    .position(x: frame.midX, y: frame.midY)
-            }
-            
-            VStack(spacing: 12) {
-                if showArrow {
-                    Image(systemName: "arrow.down")
-                        .foregroundColor(.white)
-                        .font(.title2)
-                }
-                
-                if showTapIcon {
-                    Image(systemName: "hand.tap.fill")
-                        .foregroundColor(.white)
-                        .font(.title2)
-                }
-                
-                Text(message)
-                    .font(.subheadline)
-                    .foregroundColor(.white)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(Color.brandPrimary)
-                    .cornerRadius(8)
-            }
-            .frame(maxWidth: 200)
-            .position(position)
-        }
-    }
-}
-
-struct FinalScreen: View {
-    let onDismiss: () -> Void
-    
-    var body: some View {
-        ZStack {
-            Color.brandPrimary.ignoresSafeArea()
-            
-            VStack(spacing: 30) {
-                Image(systemName: "checkmark.circle.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 100, height: 100)
-                    .foregroundColor(.white)
-                
-                Text("Congratulations!")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                
-                Text("Now you know how to use our app")
-                    .font(.body)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.white.opacity(0.8))
-                    .padding(.horizontal, 32)
-                
-                Button("Start") {
-                    onDismiss()
-                }
-                .foregroundColor(.white)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 10)
-                .background(Color.white.opacity(0.2))
-                .cornerRadius(20)
-            }
-        }
-    }
-}
-
-struct OnboardingPage {
-    let image: String
-    let title: String
-    let description: String
-}
-
 struct OnboardingView: View {
     @Binding var isOnboardingShown: Bool
     @State private var currentPage = 0
@@ -206,7 +89,6 @@ struct OnboardingView: View {
                 Color.brandPrimary.ignoresSafeArea()
                 
                 VStack(spacing: 20) {
-                    // Page Control
                     HStack {
                         ForEach(0..<pages.count, id: \.self) { index in
                             Circle()
@@ -216,7 +98,6 @@ struct OnboardingView: View {
                     }
                     .padding(.top, 20)
                     
-                    // Content
                     TabView(selection: $currentPage) {
                         ForEach(0..<pages.count, id: \.self) { index in
                             VStack(spacing: 20) {
