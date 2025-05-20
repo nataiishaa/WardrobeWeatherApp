@@ -22,10 +22,9 @@ class NotificationManager {
         content.body = "Check today's weather forecast and get outfit recommendations!"
         content.sound = .default
         
-        // Schedule notification for 9 AM every day
         var dateComponents = DateComponents()
-        dateComponents.hour = 9
-        dateComponents.minute = 0
+        dateComponents.hour = 1
+        dateComponents.minute = 45
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         let request = UNNotificationRequest(identifier: "weatherNotification", content: content, trigger: trigger)

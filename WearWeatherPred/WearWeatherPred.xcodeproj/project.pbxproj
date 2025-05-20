@@ -398,6 +398,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"WearWeatherPred/Preview Content\"";
+				DEVELOPMENT_TEAM = GM8UJT7H45;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WearWeatherPred/Info.plist;
@@ -427,6 +428,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"WearWeatherPred/Preview Content\"";
+				DEVELOPMENT_TEAM = GM8UJT7H45;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WearWeatherPred/Info.plist;
