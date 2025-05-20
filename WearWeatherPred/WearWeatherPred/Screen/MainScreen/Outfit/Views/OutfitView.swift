@@ -33,7 +33,7 @@ struct OutfitView: View {
             
             VStack(spacing: 0) {
 
-                WeatherView(city: "Moscow")
+                WeatherView()
                     .frame(maxWidth: .infinity)
                     .frame(height: 180)
 

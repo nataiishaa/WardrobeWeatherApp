@@ -6,5 +6,9 @@
 	<array>
 		<string>Montserrat-Regular.ttf</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need your location to provide weather information for your current city</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We need your location to provide weather information for your current city</string>
 </dict>
 </plist>

@@ -1,9 +1,9 @@
 import Foundation
 import SwiftUI
+
 struct WeatherView: View {
-    
     @StateObject private var weatherService = WeatherService()
-    var city: String
+    @StateObject private var locationService = LocationService()
     
     private var weatherBackground: AnyView {
         switch weatherService.weather?.weather.first?.main {
@@ -46,7 +46,7 @@ struct WeatherView: View {
                 Text("\(Int(weatherService.weather?.main.temp ?? 0))°")
                     .montserrat(size: Constants.tempFontSize).bold()
                     .foregroundColor(.white)
-                Text(city)
+                Text(locationService.currentCity)
                     .montserrat(size: Constants.cityFontSize).bold()
                     .foregroundColor(.white)
                 Text(weatherService.weather?.weather.first?.description.capitalized ?? Constants.loadingText)
@@ -58,7 +58,12 @@ struct WeatherView: View {
         .frame(maxWidth: .infinity)
         .frame(height: Constants.backgroundHeight)
         .onAppear {
-            weatherService.fetchWeather(city: city)
+            locationService.requestLocationPermission()
+        }
+        .onChange(of: locationService.currentCity) { newCity in
+            if newCity != "Loading..." && newCity != "Location access denied" {
+                weatherService.fetchWeather(city: newCity)
+            }
         }
     }
     
