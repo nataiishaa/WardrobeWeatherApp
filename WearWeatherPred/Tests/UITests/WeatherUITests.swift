@@ -9,7 +9,7 @@ final class WeatherUITests: XCTestCase {
     }
     
     func testMainScreenElements() {
-        // Проверяем наличие основных элементов на главном экране
+
         XCTAssertTrue(app.navigationBars["WearWeatherPred"].exists, "Navigation bar should exist")
         XCTAssertTrue(app.buttons["locationButton"].exists, "Location button should exist")
         XCTAssertTrue(app.buttons["cameraButton"].exists, "Camera button should exist")
@@ -24,7 +24,6 @@ final class WeatherUITests: XCTestCase {
     }
     
     func testCameraAccess() {
-        // Тестируем доступ к камере
         let cameraButton = app.buttons["cameraButton"]
         cameraButton.tap()
         

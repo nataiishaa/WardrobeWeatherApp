@@ -87,18 +87,18 @@ struct FinalScreen: View {
                     .frame(width: 100, height: 100)
                     .foregroundColor(.white)
                 
-                Text("Готово!")
+                Text("Congratulations!")
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
                 
-                Text("Теперь вы знаете все основные функции приложения")
+                Text("Now you know how to use our app")
                     .font(.body)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.white.opacity(0.8))
                     .padding(.horizontal, 32)
                 
-                Button("Начать использовать") {
+                Button("Start") {
                     onDismiss()
                 }
                 .foregroundColor(.white)
@@ -128,7 +128,7 @@ struct OnboardingView: View {
         OnboardingPage(
             image: "tshirt.fill",
             title: "Welcome to WearWeather",
-            description: "Your personal AI-powered wardrobe assistant that helps you choose outfits based on the weather"
+            description: "Your personal wardrobe assistant that helps you to choose outfits based on the weather"
         ),
         OnboardingPage(
             image: "cloud.sun.fill",
@@ -138,12 +138,12 @@ struct OnboardingView: View {
         OnboardingPage(
             image: "camera.fill",
             title: "Smart Wardrobe",
-            description: "Add your clothes to the app and let AI help you create perfect outfits"
+            description: "Add your clothes to the app and it will select the outfit for you itself"
         ),
         OnboardingPage(
             image: "wand.and.stars",
             title: "AI-Powered",
-            description: "Our AI analyzes your clothes and creates stylish combinations for any occasion"
+            description: "Our app analyzes your clothes and creates stylish combinations for any occasion"
         )
     ]
     

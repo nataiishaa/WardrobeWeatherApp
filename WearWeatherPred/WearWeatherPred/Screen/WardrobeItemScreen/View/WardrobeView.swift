@@ -52,8 +52,8 @@ struct WardrobeView: View {
                         .padding(.bottom, 8)
                     
                     ScrollView {
-                        LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 3),
-                                  spacing: 16) {
+                        LazyVGrid(columns: Array(repeating: .init(.fixed(100)), count: 3),
+                                  spacing: 12) {
                             if filteredItems.isEmpty {
                                 Text("No items yet")
                                     .foregroundColor(.secondary)
@@ -70,8 +70,8 @@ struct WardrobeView: View {
                                 }
                             }
                         }
-                                  .padding(.horizontal)
-                                  .padding(.vertical, 16)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 16)
                     }
                 }
                 .background(Color.white)

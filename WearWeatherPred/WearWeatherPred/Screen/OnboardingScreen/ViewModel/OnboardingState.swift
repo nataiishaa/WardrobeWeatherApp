@@ -3,7 +3,7 @@ import Foundation
 class OnboardingState {
     static let shared = OnboardingState()
     
-    private let hasSeenOnboardingKey = "hasSeenOnboardingssdрывs"
+    private let hasSeenOnboardingKey = "hasSeenOnboardingtimehg"
     
     private init() {}
     
