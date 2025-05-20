@@ -6,25 +6,37 @@ struct SettingsView: View {
     @State private var isNotificationsEnabled = false
     @State private var showAbout = false
     
+    private enum Constants {
+        static let titleFontSize: CGFloat = 16
+        static let titleVerticalPadding: CGFloat = 12
+        static let buttonVerticalPadding: CGFloat = 14
+        static let horizontalPadding: CGFloat = 16
+        static let dividerOpacity: Double = 0.2
+        static let chevronOpacity: Double = 0.6
+        static let toggleTintColor: Color = .purple
+        static let closeButtonFontSize: Font = .title
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Text("Settings")
-                    .montserrat(size: 16).bold()
+                    .montserrat(size: Constants.titleFontSize).bold()
                     .foregroundColor(.white)
                 
                 Spacer()
                 
                 Button { isPresented = false } label: {
                     Image(systemName: "xmark.circle.fill")
-                        .font(.title)
+                        .font(Constants.closeButtonFontSize)
                         .foregroundColor(.white)
                 }
             }
-            .padding(.horizontal)
-            .padding(.vertical, 12)
+            .padding(.horizontal, Constants.horizontalPadding)
+            .padding(.vertical, Constants.titleVerticalPadding)
             
-            Divider().background(Color.white.opacity(0.2))
+            Divider()
+                .background(Color.white.opacity(Constants.dividerOpacity))
             
             Button {
                 showAbout = true
@@ -34,11 +46,11 @@ struct SettingsView: View {
                     Text("About")
                     Spacer()
                     Image(systemName: "chevron.right")
-                        .opacity(0.6)
+                        .opacity(Constants.chevronOpacity)
                 }
                 .foregroundColor(.white)
-                .padding(.horizontal)
-                .padding(.vertical, 14)
+                .padding(.horizontal, Constants.horizontalPadding)
+                .padding(.vertical, Constants.buttonVerticalPadding)
             }
             
             HStack {
@@ -47,7 +59,7 @@ struct SettingsView: View {
                 Spacer()
                 Toggle("", isOn: $isNotificationsEnabled)
                     .labelsHidden()
-                    .toggleStyle(SwitchToggleStyle(tint: .purple))
+                    .toggleStyle(SwitchToggleStyle(tint: Constants.toggleTintColor))
                     .onChange(of: isNotificationsEnabled) { newValue in
                         if newValue {
                             NotificationManager.shared.requestAuthorization()
@@ -58,8 +70,8 @@ struct SettingsView: View {
                     }
             }
             .foregroundColor(.white)
-            .padding(.horizontal)
-            .padding(.vertical, 14)
+            .padding(.horizontal, Constants.horizontalPadding)
+            .padding(.vertical, Constants.buttonVerticalPadding)
             
             Spacer()
         }

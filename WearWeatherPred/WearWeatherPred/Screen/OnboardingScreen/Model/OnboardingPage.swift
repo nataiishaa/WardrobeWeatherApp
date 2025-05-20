@@ -3,4 +3,3 @@ struct OnboardingPage {
     let title: String
     let description: String
 }
-
