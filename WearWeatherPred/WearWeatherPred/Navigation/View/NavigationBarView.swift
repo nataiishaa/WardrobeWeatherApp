@@ -41,7 +41,7 @@ struct BottomBarView: View {
         .padding(.horizontal, 16)
     }
 
-    // MARK: helper
+    // MARK: - helper
     @ViewBuilder
     private func barButton(_ system: String,
                            isActive: Bool,
