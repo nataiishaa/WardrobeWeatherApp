@@ -6,23 +6,31 @@ struct SelectionRow: View {
     let onSelect: (String) -> Void
 
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: Constants.hStackSpacing) {
             ForEach(options, id: \.self) { option in
                 Button(action: {
                     onSelect(option)
                 }) {
                     Text(option.capitalized)
                         .frame(minWidth: 0, maxWidth: .infinity)
-                        .padding(.vertical, 8)
-                        .background(selected == option ? Color("CardAccent") : Color.white)
+                        .padding(.vertical, Constants.verticalPadding)
+                        .background(selected == option ? Color(Constants.cardAccentColor) : Color.white)
                         .foregroundColor(selected == option ? .white : .black)
-                        .cornerRadius(8)
+                        .cornerRadius(Constants.cornerRadius)
                         .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.gray.opacity(0.3))
+                            RoundedRectangle(cornerRadius: Constants.cornerRadius)
+                                .stroke(Color.gray.opacity(Constants.strokeOpacity))
                         )
                 }
             }
         }
+    }
+
+    private enum Constants {
+        static let hStackSpacing: CGFloat = 8
+        static let verticalPadding: CGFloat = 8
+        static let cornerRadius: CGFloat = 8
+        static let strokeOpacity: Double = 0.3
+        static let cardAccentColor = "CardAccent"
     }
 }

@@ -4,7 +4,6 @@ import XCTest
 final class WeatherDataTests: XCTestCase {
     
     func testWeatherDataDecoding() {
-        // Given
         let jsonString = """
         {
             "main": {

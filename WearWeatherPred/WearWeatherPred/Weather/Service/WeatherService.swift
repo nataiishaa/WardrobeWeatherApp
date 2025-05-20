@@ -4,7 +4,11 @@ class WeatherService: ObservableObject {
     @Published var weather: WeatherData?
     
     func fetchWeather(city: String) {
-        let apiKey = "69676f1213b90e1cc02a2444515eb57a"
+        guard let apiKey = Secrets.shared.apiKey(for: "OPENWEATHER_API_KEY") else {
+            print("API key not found")
+            return
+        }
+        
         let urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(city)&appid=\(apiKey)&units=metric"
         
         guard let url = URL(string: urlString) else { return }

@@ -10,6 +10,8 @@
 		A22280E72DE205B700C53ADB /* MobileNetV2.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = A2D1425B2D870054003B6AD9 /* MobileNetV2.mlmodel */; };
 		A22280E82DE205B700C53ADB /* DeepLabV3.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = A23E55272DCE1CB200DAC035 /* DeepLabV3.mlmodel */; };
 		A23E55282DCE1CB200DAC035 /* DeepLabV3.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = A23E55272DCE1CB200DAC035 /* DeepLabV3.mlmodel */; };
+		A2B1C3602DE51B630057E1E6 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2B1C35F2DE51B630057E1E6 /* Secrets.plist */; };
+		A2B1C3612DE51B630057E1E6 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2B1C35F2DE51B630057E1E6 /* Secrets.plist */; };
 		A2D1425C2D870054003B6AD9 /* MobileNetV2.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = A2D1425B2D870054003B6AD9 /* MobileNetV2.mlmodel */; };
 /* End PBXBuildFile section */
 
@@ -26,6 +28,7 @@
 /* Begin PBXFileReference section */
 		A22280522DE2028F00C53ADB /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A23E55272DCE1CB200DAC035 /* DeepLabV3.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = DeepLabV3.mlmodel; sourceTree = "<group>"; };
+		A2B1C35F2DE51B630057E1E6 /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secrets.plist; sourceTree = "<group>"; };
 		A2D142262D86DA7E003B6AD9 /* WearWeatherPred.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WearWeatherPred.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2D1425B2D870054003B6AD9 /* MobileNetV2.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MobileNetV2.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -88,6 +91,7 @@
 		A2D1421D2D86DA7E003B6AD9 = {
 			isa = PBXGroup;
 			children = (
+				A2B1C35F2DE51B630057E1E6 /* Secrets.plist */,
 				A23E55272DCE1CB200DAC035 /* DeepLabV3.mlmodel */,
 				A2D1425B2D870054003B6AD9 /* MobileNetV2.mlmodel */,
 				A2D142282D86DA7E003B6AD9 /* WearWeatherPred */,
@@ -197,6 +201,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2B1C3612DE51B630057E1E6 /* Secrets.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +209,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2B1C3602DE51B630057E1E6 /* Secrets.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -5,34 +5,34 @@ struct AboutView: View {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 20) {
-                Image(systemName: "tshirt.fill")
+            VStack(spacing: Constants.vStackSpacing) {
+                Image(systemName: Constants.imageName)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 100, height: 100)
+                    .frame(width: Constants.imageWidth, height: Constants.imageHeight)
                     .foregroundColor(.brandPrimary)
                 
-                Text("WearWeather")
+                Text(Constants.appName)
                     .font(.title)
                     .fontWeight(.bold)
                 
-                VStack(alignment: .leading, spacing: 15) {
-                    Text("About Developer")
+                VStack(alignment: .leading, spacing: Constants.innerVStackSpacing) {
+                    Text(Constants.aboutDeveloperTitle)
                         .font(.headline)
                     
-                    Text("This app was developed by Natalia Zaharova, iOS developer")
+                    Text(Constants.developerDescription)
                         .font(.body)
                         .foregroundColor(.secondary)
                     
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Contact")
+                    VStack(alignment: .leading, spacing: Constants.contactVStackSpacing) {
+                        Text(Constants.contactTitle)
                             .font(.headline)
                         
-                        Link(destination: URL(string: "https://t.me/nataishaa")!) {
+                        Link(destination: URL(string: Constants.telegramURL)!) {
                             HStack {
-                                Image(systemName: "paperplane.fill")
+                                Image(systemName: Constants.paperplaneIcon)
                                     .foregroundColor(.brandPrimary)
-                                Text("@nataishaa")
+                                Text(Constants.telegramHandle)
                                     .foregroundColor(.brandPrimary)
                             }
                         }
@@ -40,8 +40,8 @@ struct AboutView: View {
                 }
                 .padding()
                 .background(Color(.systemBackground))
-                .cornerRadius(12)
-                .shadow(radius: 2)
+                .cornerRadius(Constants.cornerRadius)
+                .shadow(radius: Constants.shadowRadius)
                 
                 Spacer()
             }
@@ -49,12 +49,36 @@ struct AboutView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
+                    Button(Constants.doneButtonTitle) {
                         dismiss()
                     }
                 }
             }
         }
+    }
+    
+    private enum Constants {
+        static let vStackSpacing: CGFloat = 20
+        static let innerVStackSpacing: CGFloat = 15
+        static let contactVStackSpacing: CGFloat = 10
+        
+        static let imageName = "tshirt.fill"
+        static let imageWidth: CGFloat = 100
+        static let imageHeight: CGFloat = 100
+        
+        static let appName = "WearWeather"
+        static let aboutDeveloperTitle = "About Developer"
+        static let developerDescription = "This app was developed by Natalia Zaharova, iOS developer"
+        
+        static let contactTitle = "Contact"
+        static let telegramURL = "https://t.me/nataishaa"
+        static let telegramHandle = "@nataishaa"
+        static let paperplaneIcon = "paperplane.fill"
+        
+        static let cornerRadius: CGFloat = 12
+        static let shadowRadius: CGFloat = 2
+        
+        static let doneButtonTitle = "Done"
     }
 }
 

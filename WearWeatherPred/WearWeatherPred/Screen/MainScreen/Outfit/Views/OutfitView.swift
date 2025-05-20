@@ -215,23 +215,42 @@ extension OutfitView {
         guard let w = weatherService.weather else { return }
         isLoading = true
 
-        let t = w.main.temp
-        let isRain = w.weather.first?.main == "Rain"
-        let isSnow = w.weather.first?.main == "Snow"
-        let windSpeed = w.wind.speed
+        do {
+            let recommendedItems = try await GroqService.shared.generateOutfitRecommendation(
+                weather: w,
+                style: selectedCategory,
+                availableItems: wardrobeVM.wardrobeItems
+            )
+            
+            if let collage = CollageBuilder.build(
+                from: recommendedItems.map { $0.id },
+                wardrobe: Dictionary(uniqueKeysWithValues: wardrobeVM.wardrobeItems.map { ($0.id, $0) })
+            ) {
+                llmCollages = [collage]
+                print("[Outfit] Successfully created collage using Groq recommendations")
+            } else {
+                print("[Outfit] Failed to create collage from Groq recommendations")
+                fallbackToDefaultOutfit(w)
+            }
+        } catch {
+            print("[Outfit] Groq generation failed: \(error)")
+            fallbackToDefaultOutfit(w)
+        }
+        
+        isLoading = false
+    }
+    
+    private func fallbackToDefaultOutfit(_ weather: WeatherData) {
+        let t = weather.main.temp
+        let isRain = weather.weather.first?.main == "Rain"
+        let isSnow = weather.weather.first?.main == "Snow"
+        let windSpeed = weather.wind.speed
 
+        print("[Outfit] Using fallback outfit generation")
         print("[Outfit] Weather conditions: temp=\(t), rain=\(isRain), snow=\(isSnow), wind=\(windSpeed)")
 
         let itemsByLayer = Dictionary(grouping: wardrobeVM.wardrobeItems, by: \.layer)
         
-        print("[Outfit] Available items by layer:")
-        for (layer, items) in itemsByLayer {
-            print("  \(layer): \(items.count) items")
-            items.forEach { item in
-                print("    - \(item.title) (season: \(item.season?.rawValue ?? "nil"), waterproof: \(item.isWaterproof))")
-            }
-        }
-
         func items(_ layer: Layer) -> [ClothingItem] {
             itemsByLayer[layer] ?? []
         }
@@ -275,7 +294,6 @@ extension OutfitView {
             return result
         }
 
-        // Weather protection matching with debug
         func okWeather(_ item: ClothingItem) -> Bool {
             if isRain || isSnow {
                 let result = item.isWaterproof || item.season == .rainy
@@ -349,7 +367,6 @@ extension OutfitView {
         guard let top = top, let bottom = bottom, let shoes = shoes else {
             print("[Outfit] Failed to find basic items")
             llmCollages = []
-            isLoading = false
             return
         }
 
@@ -374,8 +391,6 @@ extension OutfitView {
         } else {
             print("[Outfit] Failed to create collage")
         }
-        
-        isLoading = false
     }
 
     private func getMissingItems() -> [String]? {

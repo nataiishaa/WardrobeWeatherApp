@@ -17,7 +17,6 @@ struct ClothingFormView: View {
             Color.black.opacity(0.2).ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Header with back button and image
                 HStack {
                     Button(action: { showExitAlert = true }) {
                         Image(systemName: "chevron.left")
@@ -44,10 +43,8 @@ struct ClothingFormView: View {
                 }
                 .padding(.vertical, 8)
 
-                // Form content
                 ScrollView {
                     VStack(spacing: 16) {
-                        // Name field
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Name")
                                 .montserrat(size: 14).bold()
@@ -63,7 +60,6 @@ struct ClothingFormView: View {
                         }
                         .padding(.horizontal)
 
-                        // Category and Season
                         HStack(spacing: 12) {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("Category")
@@ -107,7 +103,6 @@ struct ClothingFormView: View {
                         }
                         .padding(.horizontal)
 
-                        // Type and Density
                         HStack(spacing: 12) {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("Type")

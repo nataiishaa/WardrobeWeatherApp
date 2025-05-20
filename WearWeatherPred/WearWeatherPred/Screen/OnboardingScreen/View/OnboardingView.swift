@@ -242,7 +242,6 @@ struct OnboardingView: View {
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                     
-                    // Navigation Buttons
                     HStack {
                         if currentPage > 0 {
                             Button("Back") {
