@@ -7,17 +7,40 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A22280E72DE205B700C53ADB /* MobileNetV2.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = A2D1425B2D870054003B6AD9 /* MobileNetV2.mlmodel */; };
+		A22280E82DE205B700C53ADB /* DeepLabV3.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = A23E55272DCE1CB200DAC035 /* DeepLabV3.mlmodel */; };
 		A23E55282DCE1CB200DAC035 /* DeepLabV3.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = A23E55272DCE1CB200DAC035 /* DeepLabV3.mlmodel */; };
 		A2D1425C2D870054003B6AD9 /* MobileNetV2.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = A2D1425B2D870054003B6AD9 /* MobileNetV2.mlmodel */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		A22280592DE2029500C53ADB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A2D1421E2D86DA7E003B6AD9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A2D142252D86DA7E003B6AD9;
+			remoteInfo = WearWeatherPred;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		A22280522DE2028F00C53ADB /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A23E55272DCE1CB200DAC035 /* DeepLabV3.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = DeepLabV3.mlmodel; sourceTree = "<group>"; };
 		A2D142262D86DA7E003B6AD9 /* WearWeatherPred.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WearWeatherPred.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2D1425B2D870054003B6AD9 /* MobileNetV2.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MobileNetV2.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A22280E62DE2050E00C53ADB /* Exceptions for "WearWeatherPred" folder in "UnitTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Weather/Model/Weather.swift,
+				Weather/Model/WeatherData.swift,
+				Weather/Model/WeatherMain.swift,
+				Weather/Model/Wind.swift,
+			);
+			target = A22280512DE2028F00C53ADB /* UnitTests */;
+		};
 		A2C530132DC56FE500AB54F7 /* Exceptions for "WearWeatherPred" folder in "WearWeatherPred" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -28,10 +51,16 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		A22280532DE2028F00C53ADB /* Tests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		A2D142282D86DA7E003B6AD9 /* WearWeatherPred */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				A2C530132DC56FE500AB54F7 /* Exceptions for "WearWeatherPred" folder in "WearWeatherPred" target */,
+				A22280E62DE2050E00C53ADB /* Exceptions for "WearWeatherPred" folder in "UnitTests" target */,
 			);
 			path = WearWeatherPred;
 			sourceTree = "<group>";
@@ -39,6 +68,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A222804F2DE2028F00C53ADB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A2D142232D86DA7E003B6AD9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -55,6 +91,7 @@
 				A23E55272DCE1CB200DAC035 /* DeepLabV3.mlmodel */,
 				A2D1425B2D870054003B6AD9 /* MobileNetV2.mlmodel */,
 				A2D142282D86DA7E003B6AD9 /* WearWeatherPred */,
+				A22280532DE2028F00C53ADB /* Tests */,
 				A2D142272D86DA7E003B6AD9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -63,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				A2D142262D86DA7E003B6AD9 /* WearWeatherPred.app */,
+				A22280522DE2028F00C53ADB /* UnitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,6 +108,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A22280512DE2028F00C53ADB /* UnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A22280562DE2028F00C53ADB /* Build configuration list for PBXNativeTarget "UnitTests" */;
+			buildPhases = (
+				A222804E2DE2028F00C53ADB /* Sources */,
+				A222804F2DE2028F00C53ADB /* Frameworks */,
+				A22280502DE2028F00C53ADB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A222805A2DE2029500C53ADB /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A22280532DE2028F00C53ADB /* Tests */,
+			);
+			name = UnitTests;
+			packageProductDependencies = (
+			);
+			productName = UnitTests;
+			productReference = A22280522DE2028F00C53ADB /* UnitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		A2D142252D86DA7E003B6AD9 /* WearWeatherPred */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A2D142342D86DA81003B6AD9 /* Build configuration list for PBXNativeTarget "WearWeatherPred" */;
@@ -102,6 +163,10 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					A22280512DE2028F00C53ADB = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = A2D142252D86DA7E003B6AD9;
+					};
 					A2D142252D86DA7E003B6AD9 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -122,11 +187,19 @@
 			projectRoot = "";
 			targets = (
 				A2D142252D86DA7E003B6AD9 /* WearWeatherPred */,
+				A22280512DE2028F00C53ADB /* UnitTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A22280502DE2028F00C53ADB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A2D142242D86DA7E003B6AD9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -137,6 +210,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A222804E2DE2028F00C53ADB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A22280E72DE205B700C53ADB /* MobileNetV2.mlmodel in Sources */,
+				A22280E82DE205B700C53ADB /* DeepLabV3.mlmodel in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A2D142222D86DA7E003B6AD9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -148,7 +230,47 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		A222805A2DE2029500C53ADB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A2D142252D86DA7E003B6AD9 /* WearWeatherPred */;
+			targetProxy = A22280592DE2029500C53ADB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		A22280572DE2028F00C53ADB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = program.UnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WearWeatherPred.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WearWeatherPred";
+			};
+			name = Debug;
+		};
+		A22280582DE2028F00C53ADB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = program.UnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WearWeatherPred.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WearWeatherPred";
+			};
+			name = Release;
+		};
 		A2D142322D86DA81003B6AD9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -329,6 +451,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A22280562DE2028F00C53ADB /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A22280572DE2028F00C53ADB /* Debug */,
+				A22280582DE2028F00C53ADB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A2D142212D86DA7E003B6AD9 /* Build configuration list for PBXProject "WearWeatherPred" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
