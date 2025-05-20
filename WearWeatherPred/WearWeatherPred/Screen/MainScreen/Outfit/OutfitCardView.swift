@@ -7,7 +7,7 @@ struct OutfitCardView: View {
     @State private var shareImage: UIImage?
     
     // Constants for layout
-    private let cardWidth: CGFloat = 400
+    private let cardWidth: CGFloat = 280
     private let cardHeight: CGFloat = 600
     private let horizontalSpacing: CGFloat = 20
     private let verticalSpacing: CGFloat = 30
@@ -77,6 +77,7 @@ struct OutfitCardView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
         }
+        .frame(maxWidth: 300)
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
