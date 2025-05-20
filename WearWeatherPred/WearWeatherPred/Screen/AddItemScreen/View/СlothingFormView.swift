@@ -17,26 +17,32 @@ struct ClothingFormView: View {
             Color.black.opacity(0.2).ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Header with image
-                ZStack(alignment: .topLeading) {
-                    Image(uiImage: item.image)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxHeight: 200)
-                        .background(Color.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                        .padding(.horizontal)
-                        .padding(.top, 8)
-                    
+                // Header with back button and image
+                HStack {
                     Button(action: { showExitAlert = true }) {
                         Image(systemName: "chevron.left")
                             .padding(12)
                             .background(Color.black.opacity(0.6))
                             .clipShape(Circle())
                             .foregroundColor(.white)
-                            .padding()
                     }
+                    Spacer()
                 }
+                .padding(.leading, 16)
+                .padding(.top, 16)
+
+                HStack {
+                    Spacer()
+                    Image(uiImage: item.image)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 180, height: 200)
+                        .background(Color.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        .shadow(radius: 6)
+                    Spacer()
+                }
+                .padding(.vertical, 8)
 
                 // Form content
                 ScrollView {
@@ -202,6 +208,8 @@ struct ClothingFormView: View {
                 }
                 .background(Color(.systemGray6))
             }
+            .frame(maxWidth: 420)
+            .padding(.horizontal, 24)
             .alert(isPresented: $showExitAlert) {
                 Alert(title: Text("Exit without saving?"),
                       message: Text("Your changes won't be saved."),

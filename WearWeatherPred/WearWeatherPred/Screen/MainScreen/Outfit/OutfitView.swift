@@ -224,7 +224,6 @@ extension OutfitView {
 
         let itemsByLayer = Dictionary(grouping: wardrobeVM.wardrobeItems, by: \.layer)
         
-        // Debug: Print available items
         print("[Outfit] Available items by layer:")
         for (layer, items) in itemsByLayer {
             print("  \(layer): \(items.count) items")
