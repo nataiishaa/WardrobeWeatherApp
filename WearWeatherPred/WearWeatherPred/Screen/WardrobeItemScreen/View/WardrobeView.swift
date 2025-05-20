@@ -38,15 +38,32 @@ struct WardrobeView: View {
                 
                 
                 VStack(spacing: 0) {
-                    Picker("Category", selection: $selectedCategory) {
-                        ForEach(OutfitCategory.allCases, id: \.self) { category in
-                            Text(category.rawValue.capitalized)
-                                .tag(category)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 16) {
+                            ForEach(OutfitCategory.allCases, id: \.self) { category in
+                                Button(action: {
+                                    withAnimation(.easeInOut) {
+                                        selectedCategory = category
+                                    }
+                                }) {
+                                    VStack(spacing: 8) {
+                                        Text(category.rawValue.capitalized)
+                                            .montserrat(size: 14)
+                                            .foregroundColor(selectedCategory == category ? .brandPrimary : .gray)
+                                    }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 8)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(selectedCategory == category ? Color.white : Color.gray.opacity(0.1))
+                                            .shadow(color: selectedCategory == category ? Color.black.opacity(0.1) : .clear, radius: 4, x: 0, y: 2)
+                                    )
+                                }
+                            }
                         }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
                     }
-                    .pickerStyle(SegmentedPickerStyle())
-                    .padding(.horizontal)
-                    .padding(.top, 16)
                     
                     Divider()
                         .padding(.horizontal)
