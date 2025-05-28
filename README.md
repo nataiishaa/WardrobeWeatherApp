@@ -33,9 +33,3 @@ Mobile application for providing recommendations for choosing clothes taking int
 
 ---
 
-## Installation & Running
-
-1. Clone the repository:  
-   ```bash
-   git clone https://github.com/yourusername/lookweather.git
-
